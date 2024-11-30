@@ -12,7 +12,7 @@
 //     const fetchProducts = async () => {
 //       try {
 //         const response = await axios.get(
-//           "https://farm-e-store-backend.vercel.app/api/product/get-product"
+//           "`${BASE_URL}/product/get-product"
 //         );
 //         setProducts(response.data);
 //       } catch (error) {
@@ -152,6 +152,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { HeartIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/CartContext";
+import BASE_URL from "../Helper/Helper";
 
 const ProductSection = () => {
   const [products, setProducts] = useState([]);
@@ -162,7 +163,7 @@ const ProductSection = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://farm-e-store-backend.vercel.app/api/product/get-product"
+          `${BASE_URL}/product/get-product`
         );
         setProducts(response.data);
       } catch (error) {
@@ -191,7 +192,7 @@ const ProductSection = () => {
       <div className="container mx-auto px-2 sm:px-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-gray-800">Shop all Products</h2>
-          <a href="#" className="text-blue-500 hover:underline text-sm font-medium">
+          <a href="/products" className="text-blue-500 hover:underline text-sm font-medium">
             View All
           </a>
         </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import BASE_URL from "../Helper/Helper";
 
 const AllBrands = () => {
   const [brands, setBrands] = useState([]);
@@ -9,7 +10,7 @@ const AllBrands = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await axios.get("https://farm-e-store-backend.vercel.app/api/brand/get-brand");
+        const response = await axios.get(`${BASE_URL}/brand/get-brand`);
         setBrands(response.data);
       } catch (error) {
         console.error("Error fetching brands:", error);

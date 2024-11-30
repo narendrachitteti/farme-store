@@ -1,11 +1,18 @@
 import React, { useState } from "react";
-import { useCart } from "../contexts/CartContext"; // Assumes you have a CartContext for managing cart state
+import { useNavigate } from "react-router-dom";
+import { useCart } from "../contexts/CartContext";
+import BASE_URL from "../Helper/Helper";
 
 const RazorpayCheckout = () => {
-  const { cartItems } = useCart(); // Access cart items
-  const [orderNotes, setOrderNotes] = useState(""); // For capturing order notes
+  const navigate = useNavigate();
+  const { cartItems, clearCart } = useCart(); // Access cart items and clearCart function
+  const [orderNotes, setOrderNotes] = useState("");
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [paymentDetails, setPaymentDetails] = useState(null);
 
-  // Calculate subtotal based on item prices and quantities
+  const handleBackToHome = () => {
+    navigate("/"); // Navigate to the homepage
+  };
   const calculateSubtotal = () => {
     return cartItems.reduce((total, item) => {
       const itemPrice = parseFloat(item.variant.price);
@@ -13,7 +20,6 @@ const RazorpayCheckout = () => {
     }, 0);
   };
 
-  // Calculate savings (difference between original price and current price)
   const calculateSavings = () => {
     return cartItems.reduce((total, item) => {
       const originalPrice = parseFloat(item.variant.originalPrice);
@@ -24,36 +30,33 @@ const RazorpayCheckout = () => {
 
   const handlePayment = async () => {
     try {
-      // Step 1: Create an order on the server
       const response = await fetch(
-        "https://farm-e-store-backend.vercel.app/api/razorpay/create-razorpay-order",
+        `${BASE_URL}/razorpay/create-razorpay-order`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            amount: calculateSubtotal(), // Razorpay accepts amount in paise
+            amount: calculateSubtotal(), // Convert to paise
             currency: "INR",
-            notes: { orderNotes }, // Include order notes
+            notes: { orderNotes },
           }),
         }
       );
 
       const orderData = await response.json();
 
-      // Step 2: Initialize Razorpay Checkout
       const options = {
-        key: "rzp_test_lAupy84di3wKt5", // Replace with your Razorpay Test API Key
+        key: "rzp_test_lAupy84di3wKt5",
         amount: orderData.amount,
         currency: orderData.currency,
         order_id: orderData.id,
         name: "Farm-E Store",
         description: "Secure Checkout",
         handler: async function (response) {
-          // Step 3: Verify the payment on the server
           const verifyResponse = await fetch(
-            "https://farm-e-store-backend.vercel.app/api/razorpay/verify-razorpay-payment",
+            `${BASE_URL}/razorpay/verify-razorpay-payment`,
             {
               method: "POST",
               headers: {
@@ -70,7 +73,13 @@ const RazorpayCheckout = () => {
           const verifyData = await verifyResponse.json();
 
           if (verifyData.success) {
-            alert("Payment Verified Successfully!");
+            clearCart(); // Clear the cart after successful payment
+            setPaymentSuccess(true);
+            setPaymentDetails({
+              orderId: response.razorpay_order_id,
+              paymentId: response.razorpay_payment_id,
+              amount: orderData.amount / 100,
+            });
           } else {
             alert("Payment Verification Failed!");
           }
@@ -94,17 +103,50 @@ const RazorpayCheckout = () => {
     }
   };
 
+  if (paymentSuccess) {
+    return (
+      <div className="min-h-screen bg-gray-100 flex flex-col items-center py-8">
+        <div className="bg-white p-6 rounded-lg shadow-md w-11/12 max-w-3xl text-center">
+          <h1 className="text-2xl font-bold text-green-600 mb-4">
+            Payment Successful!
+          </h1>
+          <p className="text-gray-700">
+            Thank you for your purchase. Your payment was successful.
+          </p>
+          <div className="mt-4">
+            <p className="text-sm text-gray-500">
+              Order ID: {paymentDetails.orderId}
+            </p>
+            <p className="text-sm text-gray-500">
+              Payment ID: {paymentDetails.paymentId}
+            </p>
+            <p className="text-lg font-bold text-gray-800">
+              Amount Paid: ₹{paymentDetails.amount.toFixed(2)}
+            </p>
+          </div>
+          <button
+            className="mt-6 p-3 bg-blue-500 text-white rounded text-sm font-semibold hover:bg-blue-600 transition-colors"
+            onClick={handleBackToHome} // Call navigate to go back to home
+          >
+            Back to Home
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center py-8">
       <div className="bg-white p-6 rounded-lg shadow-md w-11/12 max-w-3xl">
         <h1 className="text-2xl font-bold text-center text-gray-800 mb-4">
           Razorpay Checkout
         </h1>
-
-        {/* Cart Items */}
         <div className="overflow-y-auto max-h-80 mb-4">
           {cartItems.map((item) => (
-            <div key={item.id} className="flex items-center justify-between mb-4">
+            <div
+              key={item.id}
+              className="flex items-center justify-between mb-4"
+            >
               <img
                 src={item.imageUrl}
                 alt={item.title}
@@ -125,8 +167,6 @@ const RazorpayCheckout = () => {
             </div>
           ))}
         </div>
-
-        {/* Order Notes */}
         <textarea
           placeholder="Add order notes (optional)"
           className="w-full p-2 border rounded text-sm mb-4"
@@ -134,8 +174,6 @@ const RazorpayCheckout = () => {
           value={orderNotes}
           onChange={(e) => setOrderNotes(e.target.value)}
         />
-
-        {/* Summary */}
         <div className="space-y-2 mb-4">
           <div className="flex justify-between text-sm">
             <span>Items Total</span>
@@ -150,15 +188,12 @@ const RazorpayCheckout = () => {
             <span>₹{calculateSubtotal().toFixed(2)}</span>
           </div>
         </div>
-
-        {/* Payment Button */}
         <button
           className="w-full p-3 bg-blue-500 text-white rounded text-sm font-semibold hover:bg-blue-600 transition-colors"
           onClick={handlePayment}
         >
           Proceed to Pay ₹{calculateSubtotal().toFixed(2)}
         </button>
-
         <p className="text-xs text-gray-500 mt-2 text-center">
           Shipping, taxes, and discount codes will be calculated at checkout.
         </p>

@@ -7,6 +7,7 @@ import logo from "../assets/farmLogo.png";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Agriculture from "../assets/Agriculture.mp4"
+import BASE_URL from "../Helper/Helper";
 
 const Login = ({ setLogin }) => {
   const [loading, setLoading] = useState(false);
@@ -39,7 +40,7 @@ const Login = ({ setLogin }) => {
 
     try {
       const response = await axios.post(
-        "https://farm-e-store-backend.vercel.app/api/user/login",
+        `${BASE_URL}/user/login`,
         { email, password }
       );
 
@@ -90,7 +91,7 @@ const Login = ({ setLogin }) => {
 
     try {
       const response = await axios.post(
-        "https://farm-e-store-backend.vercel.app/api/user/add-user",
+        `${BASE_URL}/user/add-user`,
         { name, email, mobile, user_type, password }
       );
 

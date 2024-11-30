@@ -121,9 +121,8 @@
 // };
 
 // export default ProductCard;
+
 import { MdOutlineStarOutline } from "react-icons/md";
-import { ProductProps } from "../../type";
-import AddToCartBtn from "./AddToCartBtn";
 import { useState } from "react";
 import {
   Button,
@@ -133,16 +132,12 @@ import {
   Transition,
   TransitionChild,
 } from "@headlessui/react";
+import { useNavigate } from "react-router-dom";
+import AddToCartBtn from "./AddToCartBtn";
 import FormattedPrice from "./FormattedPrice";
 import ProductCardSideNav from "./ProductCardSideNav";
-import { useNavigate } from "react-router-dom";
 
-interface Props {
-  item: ProductProps;
-  setSearchText?: any;
-}
-
-const ProductCard = ({ item, setSearchText }: Props) => {
+const ProductCard = ({ item, setSearchText }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigation = useNavigate();
 
@@ -154,13 +149,14 @@ const ProductCard = ({ item, setSearchText }: Props) => {
   };
 
   // Calculate the percentage saved
-  const percentage = item?.mrp_price && item?.sell_price
-    ? ((item.mrp_price - item.sell_price) / item.mrp_price) * 100
-    : 0;
+  const percentage =
+    item?.mrp_price && item?.sell_price
+      ? ((item.mrp_price - item.sell_price) / item.mrp_price) * 100
+      : 0;
 
   const handleProduct = () => {
     navigation(`/product/${item?._id}`);
-    setSearchText && setSearchText("");
+    if (setSearchText) setSearchText("");
   };
 
   return (

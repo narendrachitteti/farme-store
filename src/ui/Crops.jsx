@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import BASE_URL from "../Helper/Helper";
 
 const CropsSection = () => {
   const [crops, setCrops] = useState([]);
@@ -23,7 +24,7 @@ const CropsSection = () => {
       try {
         setLoading(true);
         const response = await fetch(
-          "https://farm-e-store-backend.vercel.app/api/crop/get-crops"
+          `${BASE_URL}/crop/get-crops`
         );
         const data = await response.json();
         setCrops(data);

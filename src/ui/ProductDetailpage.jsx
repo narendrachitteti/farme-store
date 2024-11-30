@@ -11,6 +11,7 @@ import {
   FaHome
 } from "react-icons/fa";
 import { useCart } from "../contexts/CartContext";
+import BASE_URL from "../Helper/Helper";
 
 const ImageMagnifier = ({ imageUrl, alt, width = 400, height = 400, magnifierSize = 150, zoomLevel = 2.5 }) => {
   const [showMagnifier, setShowMagnifier] = useState(false);
@@ -132,7 +133,7 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const endpoint = `https://farm-e-store-backend.vercel.app/api/product/get-id-product/${productId}`;
+        const endpoint = `${BASE_URL}/product/get-id-product/${productId}`;
         const data = await getData(endpoint);
 
         if (data) {

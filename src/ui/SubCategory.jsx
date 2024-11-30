@@ -5,6 +5,7 @@ import { FaHome, FaChevronRight } from "react-icons/fa";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import block from "../assets/block.png";
+import BASE_URL from "../Helper/Helper";
 
 const Breadcrumb = ({ categoryTitle }) => (
   <nav className="bg-white p-4 rounded-lg shadow-md mb-4">
@@ -44,7 +45,7 @@ const SubCategory = () => {
     const fetchData = async () => {
       try {
         const subcategoryEndpoint =
-          "https://farm-e-store-backend.vercel.app/api/subcategory/get-sub-category";
+          `${BASE_URL}/subcategory/get-sub-category`;
         const subcategoriesData = await getData(subcategoryEndpoint);
         const filteredSubcategories = subcategoriesData.filter(
           (subcategory) => subcategory.category_id === categoryId
@@ -52,7 +53,7 @@ const SubCategory = () => {
         setSubcategories(filteredSubcategories);
 
         const categoryEndpoint =
-          "https://farm-e-store-backend.vercel.app/api/category/get-category";
+          `${BASE_URL}/category/get-category`;
         const categories = await getData(categoryEndpoint);
         const category = categories.find((cat) => cat._id === categoryId);
         if (category) {

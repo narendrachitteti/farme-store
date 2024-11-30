@@ -18,7 +18,7 @@
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       const endpoint =
-//         "https://farm-e-store-backend.vercel.app/api/category/get-category";
+//         "`${BASE_URL}/category/get-category";
 //       try {
 //         const data = await getData(endpoint);
 //         setCategories(data);
@@ -129,7 +129,7 @@
 //   useEffect(() => {
 //     const fetchData = async () => {
 //       const endpoint =
-//         "https://farm-e-store-backend.vercel.app/api/category/get-category";
+//         "`${BASE_URL}/category/get-category";
 //       try {
 //         const data = await getData(endpoint);
 //         setCategories(data);
@@ -187,6 +187,7 @@ import Container from "./Container";
 import { getData } from "../lib/index";
 import Title from "./Title";
 import { Link } from "react-router-dom";
+import BASE_URL from "../Helper/Helper";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -195,7 +196,7 @@ const Categories = () => {
   useEffect(() => {
     const fetchData = async () => {
       const endpoint =
-        "https://farm-e-store-backend.vercel.app/api/category/get-category";
+        `${BASE_URL}/category/get-category`;
       try {
         setLoading(true); // Set loading state to true before fetching data
         const data = await getData(endpoint);

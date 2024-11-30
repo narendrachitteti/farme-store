@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getData } from "../lib/index";
 import { Link } from "react-router-dom";
+import BASE_URL from "../Helper/Helper";
 
 const AllCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -10,7 +11,7 @@ const AllCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       const endpoint =
-        "https://farm-e-store-backend.vercel.app/api/category/get-category";
+        `${BASE_URL}/category/get-category`;
       try {
         const data = await getData(endpoint);
         setCategories(data);

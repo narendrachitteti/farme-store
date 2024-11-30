@@ -103,7 +103,7 @@
 
 //   useEffect(() => {
 //     const fetchData = async () => {
-//       const endpoint = "https://farm-e-store-backend.vercel.app/api/category/get-category";
+//       const endpoint = "`${BASE_URL}/category/get-category";
 //       try {
 //         const data = await getData(endpoint);
 //         setCategories(data);
@@ -149,6 +149,7 @@ import Carousel from "react-multi-carousel";
 import { Link } from "react-router-dom";
 import CustomRightArrow from "./CustomRightArrow";
 import CustomLeftArrow from "./CustomLeftArrow";
+import BASE_URL from "../Helper/Helper";
 
 const responsive = {
   superLargeDesktop: {
@@ -175,7 +176,7 @@ const BannerCategories = () => {
   useEffect(() => {
     const fetchData = async () => {
       const endpoint =
-        "https://farm-e-store-backend.vercel.app/api/category/get-category";
+        `${BASE_URL}/category/get-category`;
       try {
         const data = await getData(endpoint);
         setCategories(data);

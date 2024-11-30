@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import BASE_URL from "../Helper/Helper";
 
 const Allcrops = () => {
   const [crops, setCrops] = useState([]);
@@ -11,7 +12,7 @@ const Allcrops = () => {
     const fetchCrops = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("https://farm-e-store-backend.vercel.app/api/crop/get-crops");
+        const response = await axios.get(`${BASE_URL}/crop/get-crops`);
         setCrops(response.data);
       } catch (error) {
         console.error("Error fetching crops:", error);

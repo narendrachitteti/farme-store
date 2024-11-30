@@ -4,6 +4,7 @@ import { getData } from "../lib/index";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import block from "../assets/block.png";
+import BASE_URL from "../Helper/Helper";
 
 const Productpage = () => {
   const { categoryId, subcategoryId, brandId, cropId } = useParams(); // Added cropId
@@ -15,7 +16,7 @@ const Productpage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        const endpoint = "https://farm-e-store-backend.vercel.app/api/product/get-product";
+        const endpoint = `${BASE_URL}/product/get-product`;
         const data = await getData(endpoint);
 
         let filteredProducts;
