@@ -12,6 +12,7 @@ import {
 } from "react-icons/fa";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
+import { FaTag } from 'react-icons/fa';
 
 const ImageMagnifier = ({ imageUrl, alt, width = 400, height = 400, magnifierSize = 150, zoomLevel = 2.5 }) => {
   const [showMagnifier, setShowMagnifier] = useState(false);
@@ -120,7 +121,7 @@ const ProductDescriptionPoints = ({ description }) => (
   </div>
 );
 
-const ProductDetailsPage = () => {
+const ProductDetailsPage = ({ onCartOpen }) => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -159,7 +160,7 @@ const ProductDetailsPage = () => {
     fetchProductDetails();
   }, [productId]);
 
-  const handleAddToCart = () => {
+  const handleAddToCart = (openCart = false) => {
     if (product && selectedVariant) {
       const cartItem = {
         id: `${product._id}-${selectedVariant.size}`,
@@ -177,16 +178,18 @@ const ProductDetailsPage = () => {
       addToCart(cartItem);
       setSnackbarVisible(true);
       setTimeout(() => setSnackbarVisible(false), 3000);
+      if (openCart && typeof onCartOpen === "function") {
+        onCartOpen();
+      }
     }
   };
-
-  const variants = [
-    { size: "250 ml", price: 299, originalPrice: 371, discount: 19 },
-    { size: "500 ml", price: 420, originalPrice: 719, discount: 42 },
-    { size: "1 ltr", price: 740, originalPrice: 1292, discount: 43 },
-    { size: "2 ltr (pack of 1 ltr)", price: 1476, originalPrice: 2584, discount: 43 },
-    { size: "1250 ml (pack of 500 ml)", price: 1220, originalPrice: 1855, discount: 34 },
-    { size: "100 ml", price: 119, originalPrice: 173, discount: 31 },
+  
+  const availableOffers = [
+    "Special Price: Get extra ₹1700 off (price inclusive of cashback/coupon) T&C",
+    "Bank Offer: 5% Unlimited Cashback on Flipkart Axis Bank Credit Card T&C",
+    "Bank Offer: 10% off up to ₹1,500 on all Axis Bank Credit Card (incl. migrated ones) EMI Txns, on orders of ₹5000 T&C",
+    "Bank Offer: 10% off up to ₹1,500 on Flipkart Axis Bank Credit Card EMI Txns, on orders of ₹5,000 and above T&C",
+    "Bank Offer: 10% off up to ₹750 on HDFC Bank Credit Card EMI on 3 months tenure. Min. Txn Value: ₹7,500 T&C"
   ];
 
   const handleVariantChange = (variant) => setSelectedVariant(variant);
@@ -259,27 +262,16 @@ const ProductDetailsPage = () => {
 
                 <div className="mt-4">
                   <h4 className="text-md font-semibold text-gray-800">
-                    Variants
+                  Available Offers
                   </h4>
-                  <div className="grid grid-cols-3 gap-2 mt-2">
-                    {variants.map((variant, index) => (
-                      <button
-                        key={index}
-                        onClick={() => handleVariantChange(variant)}
-                        className={`border rounded-md px-3 py-2 ${
-                          selectedVariant?.size === variant.size
-                            ? "border-green-500 bg-green-100"
-                            : "border-gray-300"
-                        } text-sm flex flex-col items-center`}
-                      >
-                        <span>{variant.size}</span>
-                        <span className="text-orange-500">
-                          {variant.discount}% OFF
-                        </span>
-                        <span className="font-semibold">₹{variant.price}</span>
-                      </button>
-                    ))}
-                  </div>
+                  <div className="space-y-2 mt-2">
+        {availableOffers.map((offer, index) => (
+          <div key={index} className="bg-gray-100 p-2 rounded-md flex items-center space-x-2">
+            <FaTag className="text-orange-500" size={20}/>
+            <span className="text-sm text-gray-600">{offer}</span>
+          </div>
+        ))}
+      </div>
                 </div>
 
                 <div className="mt-4 flex items-center space-x-2">
@@ -300,15 +292,18 @@ const ProductDetailsPage = () => {
                 </div>
 
                 <div className="mt-6 flex space-x-4">
-                  <button
-                    onClick={handleAddToCart}
-                    className="bg-orange-500 text-white font-semibold px-6 py-2 rounded-lg"
-                  >
-                    Add to Cart
-                  </button>
-                  <button className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg">
-                    Buy Now
-                  </button>
+                <button
+              onClick={() => handleAddToCart(false)} // Add to cart only
+              className="bg-orange-500 text-white font-semibold px-6 py-2 rounded-lg"
+            >
+              Add to Cart
+            </button>
+            <button
+              onClick={() => handleAddToCart(true)} // Add to cart and open drawer
+              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg"
+            >
+              Buy Now
+            </button>
                 </div>
               </div>
             </div>

@@ -8,15 +8,10 @@ import {
 } from "react-router-dom";
 import App from "./App";
 import "./index.css";
-// import Cancel from "./pages/Cancel";
-// import Cart from "./pages/Cart";
+
 import Category from "./ui/Categories";
 import Subcategory from "./ui/SubCategory";
-// import Favorite from "./pages/Favorite";
 import NotFound from "./pages/NotFound";
-// import Orders from "./pages/Orders";
-// import Profile from "./pages/Profile";
-// import Success from "./pages/Success";
 import Layout from "./ui/Layout";
 import AllCategories from "./ui/Allcategories";
 import Productpage from "./ui/Productpage";
@@ -28,6 +23,8 @@ import Login from "./ui/Login";
 import CheckoutBtn from "./ui/CheckoutBtn";
 import ProductSection from "./ui/ProductList";
 import Allcrops from "./ui/AllCrops";
+import { SearchProvider } from "./contexts/SearchContext";
+import ComingSoonPage from "./ui/comingsoon";
 
 const RouterLayout = () => {
   return (
@@ -62,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "/cartpage",
         element: <CartPage />,
+      },
+      {
+        path: "/comingsoon",
+        element: <ComingSoonPage />,
       },
       {
         path: "/category/:id",
@@ -112,7 +113,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
+  <SearchProvider>
   <CartProvider>
     <RouterProvider router={router} />
   </CartProvider>
+  </SearchProvider>
 );

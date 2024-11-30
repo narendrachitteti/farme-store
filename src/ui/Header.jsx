@@ -84,7 +84,7 @@
 
 //   const handleCartClick = () => {
 //     const storedUser = localStorage.getItem("user");
-  
+
 //     if (storedUser) {
 //       setIsCartOpen(true); // Open cart page if the user is logged in
 //     } else {
@@ -103,7 +103,7 @@
 //       navigate("/login"); // Redirect to login page
 //     }
 //   };
-  
+
 //   const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
 
 //   const handleMenuClose = () => setAnchorEl(null);
@@ -150,7 +150,7 @@
 //             <img src={farmLogo} alt="Logo" className="h-16" />
 //           </Link>
 //           <div className="flex items-center space-x-2 lg:hidden">
-            
+
 //             <select
 //               value={selectedLanguage}
 //               onChange={(e) => handleLanguageChange(e.target.value)}
@@ -280,7 +280,7 @@
 //             </div>
 //           )}
 //         </div>
-        
+
 //         {/* Desktop Icon Menu */}
 //         <div className="hidden lg:flex items-center space-x-4 lg:space-x-6">
 //           <div className="flex items-center">
@@ -451,9 +451,10 @@ import farmLogo from "../assets/farmLogo.png";
 import { useCart } from "../contexts/CartContext";
 import CartPage from "./CartPage";
 import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import { Menu, MenuItem, IconButton, Avatar } from "@mui/material";
 import BASE_URL from "../Helper/Helper";
+import { useSearch } from "../contexts/SearchContext";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
@@ -461,7 +462,6 @@ const Navbar = () => {
   const [activeCategory, setActiveCategory] = useState(null);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en");
-  const [showPopularSearches, setShowPopularSearches] = useState(false);
   const { cartCount } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -469,14 +469,12 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-
+  const { searchTerm, searchResults, handleSearch } = useSearch();  // Use the search context
   // ... (keep all the existing useEffect hooks and other functions)
-useEffect(() => {
+  useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch(
-          `${BASE_URL}/category/get-category`
-        );
+        const response = await fetch(`${BASE_URL}/category/get-category`);
         const data = await response.json();
         setCategories(data);
       } catch (error) {
@@ -518,9 +516,14 @@ useEffect(() => {
     navigate("/login");
   }, [navigate]);
 
+  const handleSearchResultClick = (productId) => {
+    handleSearch(""); // Clear search results
+    navigate(`/product/${productId}`);  // Navigate to the product page
+  };
+
   const handleCartClick = () => {
     const storedUser = localStorage.getItem("user");
-  
+
     if (storedUser) {
       setIsCartOpen(true); // Open cart page if the user is logged in
     } else {
@@ -539,7 +542,7 @@ useEffect(() => {
       navigate("/login"); // Redirect to login page
     }
   };
-  
+
   const handleMenuClick = (event) => setAnchorEl(event.currentTarget);
 
   const handleMenuClose = () => setAnchorEl(null);
@@ -551,21 +554,21 @@ useEffect(() => {
   const renderServiceCards = () => (
     <div className="flex flex-wrap space-y-2 lg:space-y-0 lg:space-x-2 w-full lg:w-auto mt-2 lg:mt-0">
       <Link
-        to="#"
+        to="/comingsoon"
         className="flex items-center px-3 py-1 bg-blue-50 rounded-md w-full lg:w-auto"
       >
         <span className="text-blue-500 mr-1">🛒</span>
         <span className="text-sm font-medium">e-fresh</span>
       </Link>
       <Link
-        to="#"
+        to="/comingsoon"
         className="flex items-center px-3 py-1 bg-green-50 rounded-md w-full lg:w-auto"
       >
         <span className="text-green-500 mr-1">💊</span>
         <span className="text-sm font-medium">e-meds</span>
       </Link>
       <Link
-        to="#"
+        to="/comingsoon"
         className="flex items-center px-3 py-1 bg-orange-50 rounded-md w-full lg:w-auto"
       >
         <span className="text-orange-500 mr-1">📍</span>
@@ -578,7 +581,7 @@ useEffect(() => {
     <nav className="bg-white border-b shadow-md relative z-40">
       {/* Promotional section and top nav */}
       {/* ... (keep existing code) */}
-<div className="hidden lg:flex justify-between items-center px-6 py-2 bg-green-800 text-white text-sm">
+      <div className="hidden lg:flex justify-between items-center px-6 py-2 bg-green-800 text-white text-sm">
         <div className="flex space-x-4">
           <a href="#" className="hover:underline">
             Sell on Farm E-store
@@ -598,7 +601,7 @@ useEffect(() => {
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center px-6 py-4">
         <div className="flex justify-between items-center w-full lg:w-auto">
           {/* ... (keep existing code for logo and mobile menu) */}
-           <button
+          <button
             onClick={() => setMenuOpen(!isMenuOpen)}
             className="text-black lg:hidden mr-2"
           >
@@ -612,7 +615,6 @@ useEffect(() => {
             <img src={farmLogo} alt="Logo" className="h-16" />
           </Link>
           <div className="flex items-center space-x-2 lg:hidden">
-            
             <select
               value={selectedLanguage}
               onChange={(e) => handleLanguageChange(e.target.value)}
@@ -636,92 +638,89 @@ useEffect(() => {
                 </Avatar>
               </IconButton>
               <Menu
-              anchorEl={anchorEl}
-              open={Boolean(anchorEl)}
-              onClose={handleMenuClose}
-              PaperProps={{ style: { width: 200 } }}
-            >
-              {isLoggedIn ? (
-                <>
-                  <MenuItem>Welcome, {user?.name || "User"}</MenuItem>
-                  <MenuItem onClick={handleLogout}>Logout</MenuItem>
-                </>
-              ) : (
-                <MenuItem
-                  onClick={() => {
-                    handleMenuClose(); // Close the menu
-                    navigate("/login"); // Navigate to the login page
-                  }}
-                >
-                  Login
-                </MenuItem>
-              )}
-            </Menu>
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleMenuClose}
+                PaperProps={{ style: { width: 200 } }}
+              >
+                {isLoggedIn ? (
+                  <>
+                    <MenuItem>Welcome, {user?.name || "User"}</MenuItem>
+                    <MenuItem onClick={handleLogout}>Logout</MenuItem>
+                  </>
+                ) : (
+                  <MenuItem
+                    onClick={() => {
+                      handleMenuClose(); // Close the menu
+                      navigate("/login"); // Navigate to the login page
+                    }}
+                  >
+                    Login
+                  </MenuItem>
+                )}
+              </Menu>
             </div>
             <button
-        onClick={handleCartClick}
-        className="relative text-gray-600 hover:text-gray-800 cart-icon"
-      >
-        <FiShoppingCart className="w-5 h-5" />
-        {cartCount > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
-            {cartCount}
-          </span>
-        )}
-      </button>
+              onClick={handleCartClick}
+              className="relative text-gray-600 hover:text-gray-800 cart-icon"
+            >
+              <FiShoppingCart className="w-5 h-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </button>
           </div>
         </div>
         <div className="flex flex-col items-start mt-4 lg:mt-0 w-full lg:w-auto">
           <div className="flex items-center mr-4">
-            &nbsp;&nbsp;&nbsp;<FiMapPin className="text-green-600 mr-1" />
-            <span className="text-sm font-medium">Delivering to 517325 Madanapalle</span>
+            &nbsp;&nbsp;&nbsp;
+            <FiMapPin className="text-green-600 mr-1" />
+            <span className="text-sm font-medium">
+              Delivering to 517325 Madanapalle
+            </span>
             <FiEdit2 className="ml-1 cursor-pointer" />
           </div>
           {/* Render service cards for laptop view */}
-          <div className="hidden lg:block">
-            {renderServiceCards()}
-          </div>
+          <div className="hidden lg:block">{renderServiceCards()}</div>
         </div>
 
-<div className="w-full flex-grow mx-2 relative lg:max-w-xs">
-          <input
-            type="text"
-            placeholder="Search..."
-            className="w-full border border-gray-300 rounded-l px-4 py-2"
-            onFocus={() => setShowPopularSearches(true)}
-            onBlur={() => setShowPopularSearches(false)}
-          />
-          <div className="absolute right-0 top-0 bottom-0 flex items-center border-l border-gray-300 bg-[#FA9527] rounded-r px-2">
-            <FiSearch className="w-5 h-5 text-white" />
-          </div>
+        <div className="w-full flex-grow mx-2 relative lg:max-w-xs">
+        <input
+          type="text"
+          value={searchTerm}  // Set the search term from the context
+          placeholder="Search..."
+          className="w-full border border-gray-300 rounded-l px-4 py-2"
+          onChange={(e) => handleSearch(e.target.value)}  // Update search term on change
+        />
+        <div className="absolute right-0 top-0 bottom-0 flex items-center border-l border-gray-300 bg-[#FA9527] rounded-r px-2">
+          <FiSearch className="w-5 h-5 text-white" />
+        </div>
 
-          {showPopularSearches && (
-            <div className="absolute top-11 left-0 w-full sm:w-80 h-auto max-w-xs transform bg-white px-3 py-1 shadow-xl transition-all rounded-lg z-50">
-              <p className="font-medium text-black mb-3">Popular Searches</p>
-              {[
-                "Boron",
-                "Biovita",
-                "Humic acid",
-                "Nativo",
-                "Alika",
-                "Round",
-                "Tata",
-                "Ampligo",
-              ].map((term, index) => (
-                <button
-                  key={index}
-                  className="rounded-2xl md:rounded-xl leading-[normal] px-3 md:px-2.5 py-1.5 mr-2.5 mb-2.5 bg-borderColor border-borderColor"
+        {searchResults.length > 0 && (
+          <div className="absolute top-11 left-0 w-full sm:w-80 h-auto max-w-xs transform bg-white px-3 py-1 shadow-xl transition-all rounded-lg z-50">
+            <p className="font-medium text-black mb-3">Search Results</p>
+            <div className="space-y-2">
+              {searchResults.map((product) => (
+                <div
+                  key={product._id}
+                  onClick={() => handleSearchResultClick(product._id)}
+                  className="flex items-center space-x-2 mb-2 cursor-pointer hover:bg-gray-100 p-2 rounded"
                 >
-                  <p className="text-sm font-medium text-black text-center">
-                    {term}
-                  </p>
-                </button>
+                  <img
+                    src={product.imageUrl}
+                    alt={product.title}
+                    className="w-8 h-8 object-cover rounded"
+                  />
+                  <p className="text-sm font-medium text-black">{product.title}</p>
+                </div>
               ))}
             </div>
-          )}
-        </div>
-        {/* Desktop Icon Menu */}
-        {/* ... (keep existing code) */}
+          </div>
+        )}
+      </div>
+      
         <div className="hidden lg:flex items-center space-x-4 lg:space-x-6">
           <div className="flex items-center">
             <span className="language-icon"></span>{" "}
@@ -778,16 +777,16 @@ useEffect(() => {
           </div>
 
           <button
-        onClick={handleCartClick}
-        className="relative text-gray-600 hover:text-gray-800 cart-icon"
-      >
-        <FiShoppingCart className="w-5 h-5" />
-        {cartCount > 0 && (
-          <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
-            {cartCount}
-          </span>
-        )}
-      </button>
+            onClick={handleCartClick}
+            className="relative text-gray-600 hover:text-gray-800 cart-icon"
+          >
+            <FiShoppingCart className="w-5 h-5" />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
@@ -807,9 +806,7 @@ useEffect(() => {
         )}
 
         {/* Render service cards for mobile view */}
-        <div className="lg:hidden mb-4 w-full">
-          {renderServiceCards()}
-        </div>
+        <div className="lg:hidden mb-4 w-full">{renderServiceCards()}</div>
 
         {categories.map((category) => {
           const hasSubcategories = subCategories.some(
@@ -878,4 +875,3 @@ useEffect(() => {
 };
 
 export default Navbar;
-
