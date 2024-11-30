@@ -641,7 +641,7 @@ const Navbar = () => {
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleMenuClose}
-                PaperProps={{ style: { width: 200 } }}
+                PaperProps={{ style: { width: 230 } }}
               >
                 {isLoggedIn ? (
                   <>
@@ -761,7 +761,7 @@ const Navbar = () => {
               anchorEl={anchorEl}
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
-              PaperProps={{ style: { width: 200 } }}
+              PaperProps={{ style: { width: 230 } }}
             >
               {isLoggedIn ? (
                 <>
