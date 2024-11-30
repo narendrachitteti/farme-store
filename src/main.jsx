@@ -25,6 +25,7 @@ import ProductSection from "./ui/ProductList";
 import Allcrops from "./ui/AllCrops";
 import { SearchProvider } from "./contexts/SearchContext";
 import ComingSoonPage from "./ui/comingsoon";
+import OrderDetails from "./ui/myorders";
 
 const RouterLayout = () => {
   return (
@@ -55,6 +56,10 @@ const router = createBrowserRouter([
       {
         path: "/all-crops",
         element: <Allcrops />,
+      },
+      {
+        path: "/myorders",
+        element: <OrderDetails />,
       },
       {
         path: "/cartpage",

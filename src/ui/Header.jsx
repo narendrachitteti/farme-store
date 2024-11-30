@@ -469,7 +469,7 @@ const Navbar = () => {
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const { searchTerm, searchResults, handleSearch } = useSearch();  // Use the search context
+  const { searchTerm, searchResults, handleSearch } = useSearch(); // Use the search context
   // ... (keep all the existing useEffect hooks and other functions)
   useEffect(() => {
     const fetchCategories = async () => {
@@ -518,7 +518,7 @@ const Navbar = () => {
 
   const handleSearchResultClick = (productId) => {
     handleSearch(""); // Clear search results
-    navigate(`/product/${productId}`);  // Navigate to the product page
+    navigate(`/product/${productId}`); // Navigate to the product page
   };
 
   const handleCartClick = () => {
@@ -646,6 +646,9 @@ const Navbar = () => {
                 {isLoggedIn ? (
                   <>
                     <MenuItem>Welcome, {user?.name || "User"}</MenuItem>
+                    <MenuItem onClick={() => navigate("/myorders")}>
+                      My Orders
+                    </MenuItem>
                     <MenuItem onClick={handleLogout}>Logout</MenuItem>
                   </>
                 ) : (
@@ -687,40 +690,42 @@ const Navbar = () => {
         </div>
 
         <div className="w-full flex-grow mx-2 relative lg:max-w-xs">
-        <input
-          type="text"
-          value={searchTerm}  // Set the search term from the context
-          placeholder="Search..."
-          className="w-full border border-gray-300 rounded-l px-4 py-2"
-          onChange={(e) => handleSearch(e.target.value)}  // Update search term on change
-        />
-        <div className="absolute right-0 top-0 bottom-0 flex items-center border-l border-gray-300 bg-[#FA9527] rounded-r px-2">
-          <FiSearch className="w-5 h-5 text-white" />
+          <input
+            type="text"
+            value={searchTerm} // Set the search term from the context
+            placeholder="Search..."
+            className="w-full border border-gray-300 rounded-l px-4 py-2"
+            onChange={(e) => handleSearch(e.target.value)} // Update search term on change
+          />
+          <div className="absolute right-0 top-0 bottom-0 flex items-center border-l border-gray-300 bg-[#FA9527] rounded-r px-2">
+            <FiSearch className="w-5 h-5 text-white" />
+          </div>
+
+          {searchResults.length > 0 && (
+            <div className="absolute top-11 left-0 w-full sm:w-80 h-auto max-w-xs transform bg-white px-3 py-1 shadow-xl transition-all rounded-lg z-50">
+              <p className="font-medium text-black mb-3">Search Results</p>
+              <div className="space-y-2">
+                {searchResults.map((product) => (
+                  <div
+                    key={product._id}
+                    onClick={() => handleSearchResultClick(product._id)}
+                    className="flex items-center space-x-2 mb-2 cursor-pointer hover:bg-gray-100 p-2 rounded"
+                  >
+                    <img
+                      src={product.imageUrl}
+                      alt={product.title}
+                      className="w-8 h-8 object-cover rounded"
+                    />
+                    <p className="text-sm font-medium text-black">
+                      {product.title}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
-        {searchResults.length > 0 && (
-          <div className="absolute top-11 left-0 w-full sm:w-80 h-auto max-w-xs transform bg-white px-3 py-1 shadow-xl transition-all rounded-lg z-50">
-            <p className="font-medium text-black mb-3">Search Results</p>
-            <div className="space-y-2">
-              {searchResults.map((product) => (
-                <div
-                  key={product._id}
-                  onClick={() => handleSearchResultClick(product._id)}
-                  className="flex items-center space-x-2 mb-2 cursor-pointer hover:bg-gray-100 p-2 rounded"
-                >
-                  <img
-                    src={product.imageUrl}
-                    alt={product.title}
-                    className="w-8 h-8 object-cover rounded"
-                  />
-                  <p className="text-sm font-medium text-black">{product.title}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-      
         <div className="hidden lg:flex items-center space-x-4 lg:space-x-6">
           <div className="flex items-center">
             <span className="language-icon"></span>{" "}
@@ -761,6 +766,9 @@ const Navbar = () => {
               {isLoggedIn ? (
                 <>
                   <MenuItem>Welcome, {user?.name || "User"}</MenuItem>
+                  <MenuItem onClick={() => navigate("/myorders")}>
+                    My Orders
+                  </MenuItem>
                   <MenuItem onClick={handleLogout}>Logout</MenuItem>
                 </>
               ) : (
