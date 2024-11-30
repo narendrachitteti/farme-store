@@ -184,7 +184,7 @@
 // export default Categories;
 import React, { useEffect, useState } from "react";
 import Container from "./Container";
-import { getData } from "../lib";
+import { getData } from "../lib/index";
 import Title from "./Title";
 import { Link } from "react-router-dom";
 

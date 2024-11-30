@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getData } from "../lib";
+import { getData } from "../lib/index";
 import { Link } from "react-router-dom";
 
 const AllCategories = () => {

@@ -1,3 +1,4 @@
+import React from "react";
 import { useState, useEffect } from 'react';
 import { homeBanner } from '../assets';
 import { homeBanner2 } from '../assets';
