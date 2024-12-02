@@ -79,13 +79,16 @@ const CropsSection = () => {
                 <Link
                   key={`${crop._id}-${index}`}
                   to={`/products/crop/${crop._id}`} // Pass crop ID dynamically to product page
-                  className="flex-shrink-0 w-32 h-32 bg-white rounded-lg shadow-md border border-gray-200 p-4 flex items-center justify-center"
+                  className="flex-shrink-0 w-32 h-32 bg-white rounded-lg shadow-md border border-gray-200 p-4 flex flex-col items-center justify-center"
                 >
                   <img
                     src={crop.imageUrl}
                     alt={crop.title}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain mb-2"
                   />
+                  <p className="text-sm font-medium text-gray-700 text-center mt-2">
+                    {crop.title}
+                  </p>
                 </Link>
               ))}
             </div>

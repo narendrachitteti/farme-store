@@ -3,11 +3,14 @@ import { useState, useEffect } from 'react';
 import { homeBanner } from '../assets';
 import { homeBanner2 } from '../assets';
 import { homeBanner3 } from '../assets';
+import { homeBanner4 } from '../assets';
+import { homeBanner5 } from '../assets';
+import { homeBanner6 } from '../assets';
 
 import Container from './Container';
 import LinkButton from './LinkButton';
 
-const images = [homeBanner, homeBanner2, homeBanner3];
+const images = [homeBanner, homeBanner2, homeBanner3, homeBanner4, homeBanner5, homeBanner6];
 
 const HomeBanner = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -25,7 +28,7 @@ const HomeBanner = () => {
         <img
           src={images[currentImageIndex]}
           alt="homeBanner"
-          className="w-full h-full object-cover rounded-md transition-opacity duration-700 ease-in-out"
+          className="w-full max-h-[500px] object-cover rounded-md transition-opacity duration-700 ease-in-out"
         />
         <div className="w-full h-full absolute top-0 left-0 bg-black/10" />
       </div>

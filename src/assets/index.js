@@ -13,9 +13,12 @@ import brandFour from "./brands/brandFour.webp";
 import brandFive from "./brands/brandFive.webp";
 import brandSix from "./brands/brandSix.webp";
 import productPayment from "./productPayment.webp";
-import homeBanner from "./bannner4.webp";
-import homeBanner2 from "./banner2.webp";
-import homeBanner3 from "./banner3.webp";
+import homeBanner from "./hivet.jpg";
+import homeBanner2 from "./hivet2.jpg";
+import homeBanner3 from "./cyperhit.jpg";
+import homeBanner4 from "./banner4.jpg";
+import homeBanner5 from "./banner5.jpg";
+import homeBanner6 from "./banner6.jpg";
 
 
 export {
@@ -36,5 +39,9 @@ export {
   productPayment,
   homeBanner,
   homeBanner2,
-  homeBanner3
+  homeBanner3,
+  homeBanner4,
+  homeBanner5,
+  homeBanner6,
+
 };

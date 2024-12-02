@@ -5,9 +5,9 @@ import Categories from "./ui/Categories";
 import ProductList from "./ui/ProductList";
 // import Blog from "./ui/Blog";
 import BrandSection from "./ui/BrandSection";
-import BenefitsSection from "./ui/BenefitsSection";
+// import BenefitsSection from "./ui/BenefitsSection";
 import CropDiagnosis from "./ui/CropDiagnosis";
-import StatsSection from "./ui/StatsSection";
+// import StatsSection from "./ui/StatsSection";
 import CropsSection from "./ui/Crops";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -22,9 +22,9 @@ function App() {
       <BrandSection/>
       <CropsSection/>
       {/* <ExclusiveGallery /> */}
-      <BenefitsSection/>
+      {/* <BenefitsSection/> */}
       <ProductList />
-      <StatsSection/>
+      {/* <StatsSection/> */}
       <br/>
 
       {/* <Blog /> */}

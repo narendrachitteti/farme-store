@@ -579,10 +579,9 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b shadow-md relative z-40">
-      {/* Promotional section and top nav */}
-      {/* ... (keep existing code) */}
-      <div className="hidden lg:flex justify-between items-center px-6 py-2 bg-green-800 text-white text-sm">
-        <div className="flex space-x-4">
+      
+      {/* <div className="hidden lg:flex justify-between items-center px-6 py-2 bg-green-800 text-white text-sm"> */}
+        {/* <div className="flex space-x-4">
           <a href="#" className="hover:underline">
             Sell on Farm E-store
           </a>
@@ -596,7 +595,7 @@ const Navbar = () => {
         <span className="bg-orange-500 px-2 py-1 rounded text-white font-semibold">
           Missed Call To Order: 1800-3000-2434
         </span>
-      </div>
+      </div> */}
       {/* Logo and Icons */}
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center px-6 py-4">
         <div className="flex justify-between items-center w-full lg:w-auto">
