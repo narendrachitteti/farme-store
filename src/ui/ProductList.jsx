@@ -213,17 +213,6 @@ const ProductSection = () => {
                   % OFF
                 </div>
 
-                {/* Wishlist Icon */}
-                {/* <button 
-                  className="absolute top-2 right-2"
-                  onClick={(e) => {
-                    e.preventDefault(); // Prevent navigation when clicking the heart icon
-                    // Add wishlist functionality here
-                  }}
-                >
-                  <HeartIcon className="w-5 h-5 text-gray-400 hover:text-red-500 transition-colors duration-200" />
-                </button> */}
-
                 {/* Product Image */}
                 <img
                   src={product.imageUrl}

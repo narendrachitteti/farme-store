@@ -580,26 +580,8 @@ const Navbar = () => {
   return (
     <nav className="bg-white border-b shadow-md relative z-40">
       
-      {/* <div className="hidden lg:flex justify-between items-center px-6 py-2 bg-green-800 text-white text-sm"> */}
-        {/* <div className="flex space-x-4">
-          <a href="#" className="hover:underline">
-            Sell on Farm E-store
-          </a>
-          <a href="#" className="hover:underline">
-            Bulk Order Inquiries
-          </a>
-          <a href="#" className="hover:underline">
-            Corporate Site
-          </a>
-        </div>
-        <span className="bg-orange-500 px-2 py-1 rounded text-white font-semibold">
-          Missed Call To Order: 1800-3000-2434
-        </span>
-      </div> */}
-      {/* Logo and Icons */}
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center px-6 py-4">
         <div className="flex justify-between items-center w-full lg:w-auto">
-          {/* ... (keep existing code for logo and mobile menu) */}
           <button
             onClick={() => setMenuOpen(!isMenuOpen)}
             className="text-black lg:hidden mr-2"
@@ -623,9 +605,7 @@ const Navbar = () => {
               <option value="hi">हिन्दी</option>
               <option value="te">తెలుగు</option>
             </select>
-            {/* <Link to="#" className="text-gray-600 hover:text-gray-800">
-              <FiHeart className="w-5 h-5" />
-            </Link> */}
+            
             <div>
               <IconButton onClick={handleMenuClick}>
                 <Avatar>
@@ -728,7 +708,6 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center space-x-4 lg:space-x-6">
           <div className="flex items-center">
             <span className="language-icon"></span>{" "}
-            {/* Rotating letters icon */}
             <select
               value={selectedLanguage}
               onChange={(e) => handleLanguageChange(e.target.value)}
@@ -739,13 +718,7 @@ const Navbar = () => {
               <option value="te">తెలుగు</option>
             </select>
           </div>
-          {/* <Link
-            to="#"
-            className="text-gray-600 hover:text-gray-800 flex items-center"
-          >
-            <FiHeart className="w-5 h-5" />
-            <span className="ml-1">Wishlist</span>
-          </Link> */}
+          
           <div>
             <IconButton onClick={handleMenuClick}>
               <Avatar>

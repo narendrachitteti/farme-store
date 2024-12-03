@@ -8,22 +8,39 @@ import BASE_URL from "../Helper/Helper";
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024); // Track screen size
 
   useEffect(() => {
     const fetchData = async () => {
       const endpoint = `${BASE_URL}/subcategory/get-sub-category`;
       try {
-        setLoading(true); // Set loading state to true before fetching data
+        setLoading(true);
         const data = await getData(endpoint);
         setCategories(data);
       } catch (error) {
         console.error("Error fetching data", error);
       } finally {
-        setLoading(false); // Set loading state to false after data is fetched
+        setLoading(false);
       }
     };
     fetchData();
+
+    // Resize listener to dynamically adjust the number of displayed categories
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    // Add resize event listener
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
+
+  // Limit categories to 9 on mobile, show all on larger screens
+  const displayedCategories = isMobile ? categories.slice(0, 9) : categories;
 
   return (
     <Container>
@@ -50,7 +67,7 @@ const Categories = () => {
         ) : (
           /* Categories Grid */
           <div className="grid grid-cols-3 md:grid-cols-8 gap-5">
-            {categories.map((item) => (
+            {displayedCategories.map((item) => (
               <Link
                 to={`/category/${item.category_id}/subcategory/${item._id}/products`}
                 key={item._id}

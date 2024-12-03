@@ -11,12 +11,14 @@ import CropDiagnosis from "./ui/CropDiagnosis";
 import CropsSection from "./ui/Crops";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ExclusiveDeals from "./ui/ExclusiveDeals";
 
 function App() {
   return (
     <main>
       <ToastContainer />
       <HomeBanner />
+      <ExclusiveDeals/>
       <Categories />
       <CropDiagnosis/>
       <BrandSection/>

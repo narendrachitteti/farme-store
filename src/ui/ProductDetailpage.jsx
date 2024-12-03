@@ -14,73 +14,23 @@ import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
 import { FaTag } from 'react-icons/fa';
 
-const ImageMagnifier = ({ imageUrl, alt, width = 400, height = 400, magnifierSize = 150, zoomLevel = 2.5 }) => {
-  const [showMagnifier, setShowMagnifier] = useState(false);
-  const [magnifierPosition, setMagnifierPosition] = useState({ x: 0, y: 0 });
-  
-  const imageContainerRef = useRef(null);
-  
-  const handleMouseMove = (e) => {
-    if (!imageContainerRef.current) return;
-
-    const elementRect = imageContainerRef.current.getBoundingClientRect();
-    const x = e.clientX - elementRect.left;
-    const y = e.clientY - elementRect.top;
-
-    if (x < 0 || x > elementRect.width || y < 0 || y > elementRect.height) {
-      setShowMagnifier(false);
-      return;
-    }
-
-    setMagnifierPosition({
-      x: x - magnifierSize / 2,
-      y: y - magnifierSize / 2,
-    });
-
-    setShowMagnifier(true);
-  };
-
-  return (
-    <div 
-      ref={imageContainerRef}
-      className="relative inline-block"
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => setShowMagnifier(false)}
-    >
+const ImageModal = ({ imageUrl, alt, onClose }) => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="relative bg-white p-6 rounded-lg max-w-3xl">
+      <button
+        onClick={onClose}
+        className="absolute top-2 right-2 text-white bg-red-500 p-2 rounded-full"
+      >
+        X
+      </button>
       <img
         src={imageUrl}
         alt={alt}
-        className="object-contain rounded-lg cursor-zoom-in"
-        style={{ width, height }}
+        className="max-w-full max-h-full object-contain"
       />
-      
-      {showMagnifier && (
-        <div
-          className="absolute pointer-events-none border border-gray-200 rounded-full overflow-hidden shadow-lg"
-          style={{
-            width: `${magnifierSize}px`,
-            height: `${magnifierSize}px`,
-            left: `${magnifierPosition.x}px`,
-            top: `${magnifierPosition.y}px`,
-          }}
-        >
-          <img
-            src={imageUrl}
-            alt={alt}
-            className="absolute"
-            style={{
-              width: `${width * zoomLevel}px`,
-              height: `${height * zoomLevel}px`,
-              left: `${-magnifierPosition.x * zoomLevel + magnifierSize / 2}px`,
-              top: `${-magnifierPosition.y * zoomLevel + magnifierSize / 2}px`,
-            }}
-          />
-        </div>
-      )}
     </div>
-  );
-};
-
+  </div>
+);
 const Breadcrumb = ({ product }) => (
   <nav className="bg-white p-4 rounded-lg shadow-md mb-4">
     <ol className="flex flex-wrap items-center text-sm">
@@ -120,7 +70,6 @@ const ProductDescriptionPoints = ({ description }) => (
     </ul>
   </div>
 );
-
 const ProductDetailsPage = ({ onCartOpen }) => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
@@ -129,6 +78,7 @@ const ProductDetailsPage = ({ onCartOpen }) => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [showModal, setShowModal] = useState(false);  // New state to control modal visibility
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -183,19 +133,19 @@ const ProductDetailsPage = ({ onCartOpen }) => {
       }
     }
   };
-  
-  const availableOffers = [
-    "Special Price: Get extra ₹1700 off (price inclusive of cashback/coupon) T&C",
-    "Bank Offer: 5% Unlimited Cashback on Flipkart Axis Bank Credit Card T&C",
-    "Bank Offer: 10% off up to ₹1,500 on all Axis Bank Credit Card (incl. migrated ones) EMI Txns, on orders of ₹5000 T&C",
-    "Bank Offer: 10% off up to ₹1,500 on Flipkart Axis Bank Credit Card EMI Txns, on orders of ₹5,000 and above T&C",
-    "Bank Offer: 10% off up to ₹750 on HDFC Bank Credit Card EMI on 3 months tenure. Min. Txn Value: ₹7,500 T&C"
-  ];
 
   const handleVariantChange = (variant) => setSelectedVariant(variant);
   
   const handleThumbnailClick = (imageUrl) => {
     setSelectedImage(imageUrl);
+  };
+
+  const handleImageClick = () => {
+    setShowModal(true); // Open the modal when the main image is clicked
+  };
+
+  const closeModal = () => {
+    setShowModal(false);  // Close the modal
   };
 
   return (
@@ -211,11 +161,12 @@ const ProductDetailsPage = ({ onCartOpen }) => {
           <>
             <div className="bg-white border rounded-lg shadow-md p-6 flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
               <div className="flex flex-col items-center lg:w-1/2">
-                <ImageMagnifier
-                  imageUrl={selectedImage || product.imageUrl}
+                <img
+                  src={selectedImage || product.imageUrl}
                   alt={product.title}
-                  width={400}
-                  height={400}
+                  className="object-contain rounded-lg cursor-pointer"
+                  style={{ width: 400, height: 400 }}
+                  onClick={handleImageClick}  // Trigger modal on click
                 />
                 <div className="flex space-x-2 mt-4">
                   {[product.imageUrl, product.imageUrl, product.imageUrl].map(
@@ -259,21 +210,6 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                   </div>
                   <p className="text-sm text-gray-500">Inclusive of all taxes</p>
                 </div>
-
-                <div className="mt-4">
-                  <h4 className="text-md font-semibold text-gray-800">
-                  Available Offers
-                  </h4>
-                  <div className="space-y-2 mt-2">
-        {availableOffers.map((offer, index) => (
-          <div key={index} className="bg-gray-100 p-2 rounded-md flex items-center space-x-2">
-            <FaTag className="text-orange-500" size={20}/>
-            <span className="text-sm text-gray-600">{offer}</span>
-          </div>
-        ))}
-      </div>
-                </div>
-
                 <div className="mt-4 flex items-center space-x-2">
                   <FaFlag className="text-green-500" />
                   <span className="text-gray-600 text-sm">
@@ -289,21 +225,21 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                   <span className="text-gray-600 text-sm">
                     In stock, Ready to Ship
                   </span>
-                </div>
+                </div> 
 
                 <div className="mt-6 flex space-x-4">
-                <button
-              onClick={() => handleAddToCart(false)} // Add to cart only
-              className="bg-orange-500 text-white font-semibold px-6 py-2 rounded-lg"
-            >
-              Add to Cart
-            </button>
-            <button
-              onClick={() => handleAddToCart(true)} // Add to cart and open drawer
-              className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg"
-            >
-              Buy Now
-            </button>
+                  <button
+                    onClick={() => handleAddToCart(false)} // Add to cart only
+                    className="bg-orange-500 text-white font-semibold px-6 py-2 rounded-lg"
+                  >
+                    Add to Cart
+                  </button>
+                  <button
+                    onClick={() => handleAddToCart(true)} // Add to cart and open drawer
+                    className="bg-green-600 text-white font-semibold px-6 py-2 rounded-lg"
+                  >
+                    Buy Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -319,6 +255,15 @@ const ProductDetailsPage = ({ onCartOpen }) => {
           <div className="fixed bottom-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md">
             Added to cart
           </div>
+        )}
+
+        {/* Image Modal */}
+        {showModal && (
+          <ImageModal
+            imageUrl={selectedImage}
+            alt={product.title}
+            onClose={closeModal}
+          />
         )}
       </div>
     </div>

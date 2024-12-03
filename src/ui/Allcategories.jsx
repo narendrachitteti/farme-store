@@ -11,7 +11,7 @@ const AllCategories = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       const endpoint =
-        `${BASE_URL}/category/get-category`;
+        `${BASE_URL}/subcategory/get-sub-category`;
       try {
         const data = await getData(endpoint);
         setCategories(data);
@@ -37,7 +37,7 @@ const AllCategories = () => {
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5">
           {categories.map((item) => (
             <Link
-              to={`/category/${item._id}/subcategory`} // Link to the subcategory route
+              to={`/category/${item.category_id}/subcategory/${item._id}/products`} // Link to the subcategory route
               key={item._id}
               className="flex flex-col items-center text-center border rounded-lg p-4 hover:shadow-lg transition-shadow"
             >
