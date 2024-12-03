@@ -5,7 +5,7 @@ import Title from "./Title";
 import { Link } from "react-router-dom";
 import BASE_URL from "../Helper/Helper";
 
-const SubCategories = () => {
+const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -30,7 +30,10 @@ const SubCategories = () => {
       <div className="w-full p-5 border rounded-md relative">
         {/* Title and "View All" button */}
         <div className="flex justify-between items-center mb-4">
-          <Title text="Shop by Sub Categories" className="text-lg md:text-xl underline" />
+          <Title
+            text="Shop by Categories"
+            className="text-lg md:text-xl underline"
+          />
           <Link
             to="/categories"
             className="text-sm md:text-base font-semibold text-blue-600 hover:underline"
@@ -49,18 +52,21 @@ const SubCategories = () => {
           <div className="grid grid-cols-3 md:grid-cols-8 gap-5">
             {categories.map((item) => (
               <Link
-                to={`/category/${item.category_id}/subcategory/${item._id}/products`} // Updated route to navigate to products
+                to={`/category/${item.category_id}/subcategory/${item._id}/products`}
                 key={item._id}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-28 h-28 bg-gray-200 border-gray-300 rounded-full overflow-hidden">
+                <div className="w-28 h-28 bg-gray-200 rounded-full overflow-hidden">
                   <img
                     src={item.imageUrl}
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
                 </div>
-                <p className="mt-2 text-sm font-bold">{item.title}</p>
+                {/* Title with word wrapping */}
+                <p className="mt-2 text-sm font-bold break-words w-28">
+                  {item.title}
+                </p>
               </Link>
             ))}
           </div>
@@ -70,4 +76,4 @@ const SubCategories = () => {
   );
 };
 
-export default SubCategories;
+export default Categories;
