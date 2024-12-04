@@ -51,10 +51,11 @@ const CropsSection = () => {
           </Link>
         </div>
 
-        {/* Show loading message while data is being fetched */}
+        {/* Show spinner loader while data is being fetched */}
         {loading ? (
           <div className="flex justify-center items-center min-h-[200px]">
-            <p className="text-lg font-medium">Loading crops...</p>
+            <div className="loader-spinner"></div>&nbsp;
+            <p className="text-gray-500 text-sm font-medium">Loading crops...</p>
           </div>
         ) : (
           <>
@@ -64,7 +65,7 @@ const CropsSection = () => {
                 {crops.slice(0, 2).map((crop) => (
                   <Link
                     key={crop._id}
-                    to={`/products/crop/${crop._id}`} // Pass crop ID dynamically to product page
+                    to={`/products/crop/${crop._id}`}
                     className="bg-white rounded-lg shadow-md border border-gray-200 p-4 flex flex-col items-center justify-center"
                   >
                     <img
@@ -136,6 +137,25 @@ const CropsSection = () => {
         @media (max-width: 767px) {
           .animate-scroll {
             animation: none;
+          }
+        }
+
+        /* Spinner Loader */
+        .loader-spinner {
+          border: 4px solid rgba(0, 0, 0, 0.1);
+          border-top: 4px solid #4a90e2;
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
           }
         }
       `}</style>

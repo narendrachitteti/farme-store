@@ -85,7 +85,7 @@ const Categories = () => {
           </div>
         ) : (
           /* Categories Grid */
-          <div className="grid grid-cols-2 md:grid-cols-8 gap-5">
+          <div className="grid grid-cols-3 md:grid-cols-8 gap-5">
             {displayedCategories.map((item) => (
               <Link
                 to={`/category/${item.category_id}/subcategory/${item._id}/products`}
@@ -100,7 +100,8 @@ const Categories = () => {
                   />
                 </div>
                 {/* Title with word wrapping */}
-                <p className="mt-2 text-sm break-words w-28">
+                <p className="mt-2 text-sm font-medium text-gray-700 break-words w-28">
+
                   {item.title}
                 </p>
               </Link>

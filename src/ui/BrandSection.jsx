@@ -7,6 +7,7 @@ const BrandSection = () => {
   const [brands, setBrands] = useState([]);
   const [isPaused, setIsPaused] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [loading, setLoading] = useState(true); // State for loading
 
   // Check if the viewport is mobile
   useEffect(() => {
@@ -22,10 +23,13 @@ const BrandSection = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
+        setLoading(true); // Start loading
         const response = await axios.get(`${BASE_URL}/brand/get-brand`);
         setBrands(response.data);
       } catch (error) {
         console.error("Error fetching brands:", error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
     fetchBrands();
@@ -38,57 +42,69 @@ const BrandSection = () => {
     <section className="py-8 bg-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">Shop by Brands</h2>
+          <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">
+            Shop by Brands
+          </h2>
           <Link to="/all-brands" className="text-blue-500 hover:underline">
             View All
           </Link>
         </div>
 
-        {/* Mobile View: Show only 2 cards */}
-        {isMobile ? (
-          <div className="grid grid-cols-2 gap-4">
-            {brands.slice(0, 2).map((brand) => (
-              <Link
-                key={brand._id}
-                to={`/products/brand/${brand._id}`}
-                className="bg-white rounded-lg shadow-md border border-gray-200 p-4 flex items-center justify-center"
-              >
-                <img
-                  src={brand.imageUrl}
-                  alt={brand.title}
-                  className="w-full h-24 object-contain"
-                />
-              </Link>
-            ))}
+        {loading ? (
+          // Spinner loader while fetching data
+          <div className="flex justify-center items-center min-h-[200px]">
+            <div className="loader-spinner"></div>&nbsp;
+            <p className="text-gray-500 text-sm font-medium">Loading brands...</p>
           </div>
         ) : (
-          // Laptop/Desktop View: Horizontal Auto-Scroller
-          <div className="relative overflow-hidden">
-            <div
-              className={`flex space-x-4 animate-scroll ${
-                isPaused ? "pause" : ""
-              }`}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-              style={{
-                animation: "scroll 20s linear infinite",
-              }}
-            >
-              {duplicatedBrands.map((brand, index) => (
-                <Link
-                  key={`${brand._id}-${index}`}
-                  to={`/products/brand/${brand._id}`}
-                  className="flex-shrink-0 w-32 h-32 bg-white rounded-lg shadow-md border border-gray-200 p-4 flex items-center justify-center"
+          <>
+            {/* Mobile View: Show only 2 cards */}
+            {isMobile ? (
+              <div className="grid grid-cols-2 gap-4">
+                {brands.slice(0, 2).map((brand) => (
+                  <Link
+                    key={brand._id}
+                    to={`/products/brand/${brand._id}`}
+                    className="bg-white rounded-lg shadow-md border border-gray-200 p-4 flex items-center justify-center"
+                  >
+                    <img
+                      src={brand.imageUrl}
+                      alt={brand.title}
+                      className="w-full h-24 object-contain"
+                    />
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              // Laptop/Desktop View: Horizontal Auto-Scroller
+              <div className="relative overflow-hidden">
+                <div
+                  className={`flex space-x-4 animate-scroll ${
+                    isPaused ? "pause" : ""
+                  }`}
+                  onMouseEnter={() => setIsPaused(true)}
+                  onMouseLeave={() => setIsPaused(false)}
+                  style={{
+                    animation: "scroll 20s linear infinite",
+                  }}
                 >
-                  <img
-                    src={brand.imageUrl}
-                    alt={brand.title}
-                    className="w-full h-full object-contain"
-                  />
-                </Link>
-              ))}
-            </div>
-          </div>
+                  {duplicatedBrands.map((brand, index) => (
+                    <Link
+                      key={`${brand._id}-${index}`}
+                      to={`/products/brand/${brand._id}`}
+                      className="flex-shrink-0 w-32 h-32 bg-white rounded-lg shadow-md border border-gray-200 p-4 flex items-center justify-center"
+                    >
+                      <img
+                        src={brand.imageUrl}
+                        alt={brand.title}
+                        className="w-full h-full object-contain"
+                      />
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 
@@ -118,6 +134,25 @@ const BrandSection = () => {
           /* Disable scrolling animation for mobile view */
           .animate-scroll {
             animation: none;
+          }
+        }
+
+        /* Spinner Loader */
+        .loader-spinner {
+          border: 4px solid rgba(0, 0, 0, 0.1);
+          border-top: 4px solid #4a90e2;
+          border-radius: 50%;
+          width: 36px;
+          height: 36px;
+          animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
           }
         }
       `}</style>
