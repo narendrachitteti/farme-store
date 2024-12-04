@@ -447,7 +447,7 @@ import {
   FiChevronDown,
   FiChevronUp,
 } from "react-icons/fi";
-import farmLogo from "../assets/farmLogo.png";
+import farmLogo from "../assets/logo34.png";
 import { useCart } from "../contexts/CartContext";
 import CartPage from "./CartPage";
 import { toast } from "react-toastify";
@@ -593,7 +593,7 @@ const Navbar = () => {
             )}
           </button>
           <Link to="/">
-            <img src={farmLogo} alt="Logo" className="h-16" />
+            <img src={farmLogo} alt="Logo" className="h-24" />
           </Link>
           <div className="flex items-center space-x-2 lg:hidden">
             <select

@@ -12,6 +12,10 @@ import CropsSection from "./ui/Crops";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ExclusiveDeals from "./ui/ExclusiveDeals";
+import Pesticides from "./ui/Pesticides";
+import Fertilizers from "./ui/Fertilizers";
+import Seeds from "./ui/Seeds";
+// import IntegratedPestManagement from "./ui/IntegratedPest";
 
 function App() {
   return (
@@ -20,12 +24,16 @@ function App() {
       <HomeBanner />
       <ExclusiveDeals/>
       <Categories />
-      <CropDiagnosis/>
       <BrandSection/>
       <CropsSection/>
       {/* <ExclusiveGallery /> */}
       {/* <BenefitsSection/> */}
       <ProductList />
+      <CropDiagnosis/>
+      <Pesticides/>
+      <Fertilizers/>
+      <Seeds/>
+      {/* <IntegratedPestManagement/> */}
       {/* <StatsSection/> */}
       <br/>
 

@@ -16,7 +16,10 @@ const Categories = () => {
       try {
         setLoading(true);
         const data = await getData(endpoint);
-        setCategories(data);
+
+        // Check for "Combo Offers" and reorder categories
+        const reorderedCategories = reorderCategories(data);
+        setCategories(reorderedCategories);
       } catch (error) {
         console.error("Error fetching data", error);
       } finally {
@@ -38,6 +41,22 @@ const Categories = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  const reorderCategories = (data) => {
+    // Find the category with "Combo Offers"
+    const comboOfferCategory = data.find((item) =>
+      item.title.trim().toLowerCase().startsWith("combo offers")
+    );
+
+    if (comboOfferCategory) {
+      // Exclude the found category and prepend it to the array
+      const filteredCategories = data.filter(
+        (item) => item._id !== comboOfferCategory._id
+      );
+      return [comboOfferCategory, ...filteredCategories];
+    }
+    return data; // If no "Combo Offers" category is found, return original order
+  };
 
   // Limit categories to 9 on mobile, show all on larger screens
   const displayedCategories = isMobile ? categories.slice(0, 9) : categories;
@@ -66,7 +85,7 @@ const Categories = () => {
           </div>
         ) : (
           /* Categories Grid */
-          <div className="grid grid-cols-3 md:grid-cols-8 gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-8 gap-5">
             {displayedCategories.map((item) => (
               <Link
                 to={`/category/${item.category_id}/subcategory/${item._id}/products`}
@@ -81,7 +100,7 @@ const Categories = () => {
                   />
                 </div>
                 {/* Title with word wrapping */}
-                <p className="mt-2 text-sm font-bold break-words w-28">
+                <p className="mt-2 text-sm break-words w-28">
                   {item.title}
                 </p>
               </Link>

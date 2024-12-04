@@ -16,7 +16,7 @@ import productPayment from "./productPayment.webp";
 import homeBanner from "./hivet.jpg";
 import homeBanner2 from "./hivet2.jpg";
 import homeBanner3 from "./cyperhit.jpg";
-import homeBanner4 from "./banner4.jpg";
+import homeBanner4 from "./Hindusthan.jpg";
 import homeBanner5 from "./banner5.jpg";
 import homeBanner6 from "./banner6.jpg";
 

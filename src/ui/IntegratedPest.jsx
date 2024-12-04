@@ -1,28 +1,44 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { HeartIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
 
-const ProductSection = () => {
+const IntegratedPestManagement = () => {
   const [products, setProducts] = useState([]);
   const { addToCart, isItemInCart, getItemQuantity } = useCart();
 
-  // Fetch products from API
+  // Fetch and filter products by the "IntegratedPestManagement" category
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchSeedProducts = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/product/get-product`
-        );
-        setProducts(response.data);
+        // Fetch all categories
+        const categoryResponse = await axios.get(`${BASE_URL}/category/get-category`);
+        const categories = categoryResponse.data;
+
+        // Find the "IntegratedPestManagement" category
+        const IntegratedPestManagementCategory = categories.find((category) => category.title === "Integrated Pest Management");
+
+        if (IntegratedPestManagementCategory) {
+          const categoryId = IntegratedPestManagementCategory._id;
+
+          // Fetch products and filter by category_id
+          const productResponse = await axios.get(`${BASE_URL}/product/get-product`);
+          const allProducts = productResponse.data;
+
+          const filteredProducts = allProducts.filter(
+            (product) => product.category_id === categoryId
+          );
+
+          setProducts(filteredProducts);
+        }
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching Integrated Pest Management products:", error);
       }
     };
-    fetchProducts();
+
+    fetchSeedProducts();
   }, []);
 
   // Function to handle adding a product to the cart
@@ -43,7 +59,7 @@ const ProductSection = () => {
     <section className="py-8 bg-gray-100">
       <div className="container mx-auto px-2 sm:px-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">Shop all Products</h2>
+          <h2 className="text-2xl font-bold text-gray-800">Integrated Pest Management</h2>
           <a href="/products" className="text-blue-500 hover:underline text-sm font-medium">
             View All
           </a>
@@ -117,4 +133,4 @@ const ProductSection = () => {
   );
 };
 
-export default ProductSection;
+export default IntegratedPestManagement;

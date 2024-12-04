@@ -39,7 +39,12 @@ const ExclusiveDeals = () => {
             >
               {/* Top: Shop Label */}
               <div className="text-center p-2 border-b border-green-500">
-                <p className="font-bold text-gray-800">{shopLabels[index]}</p>
+                <p className="font-bold text-gray-800">
+                  Shop For{" "}
+                  <span className="text-red-600">
+                    {shopLabels[index].split("Shop For ")[1]}
+                  </span>
+                </p>
               </div>
 
               {/* Main Content: Image and Details */}
@@ -71,7 +76,6 @@ const ExclusiveDeals = () => {
                     </span>
                   </p>
 
-                  {/* Price Section */}
                   {/* Price Section */}
                   <div className="flex items-center gap-2 mt-4">
                     <p className="text-2xl font-bold text-green-600">
