@@ -470,7 +470,6 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { searchTerm, searchResults, handleSearch } = useSearch(); // Use the search context
-  // ... (keep all the existing useEffect hooks and other functions)
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -579,7 +578,6 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white border-b shadow-md relative z-40">
-      
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center px-6 py-4">
         <div className="flex justify-between items-center w-full lg:w-auto">
           <button
@@ -605,7 +603,7 @@ const Navbar = () => {
               <option value="hi">हिन्दी</option>
               <option value="te">తెలుగు</option>
             </select>
-            
+
             <div>
               <IconButton onClick={handleMenuClick}>
                 <Avatar>
@@ -718,7 +716,7 @@ const Navbar = () => {
               <option value="te">తెలుగు</option>
             </select>
           </div>
-          
+
           <div>
             <IconButton onClick={handleMenuClick}>
               <Avatar>
@@ -775,6 +773,10 @@ const Navbar = () => {
         className={`fixed inset-y-0 left-0 bg-white p-6 border border-green-300 rounded-md shadow-lg transition-transform transform ${
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         } lg:static lg:translate-x-0 lg:flex lg:justify-center lg:space-x-6 py-4 text-gray-600 font-semibold text-sm lg:relative border-t border-gray-300`}
+        style={{
+          marginLeft: "1rem", // Space on the left
+          marginRight: "1rem", // Space on the right
+        }}
       >
         {isMenuOpen && (
           <button

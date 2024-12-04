@@ -64,15 +64,15 @@ const Categories = () => {
   return (
     <Container>
       <div className="w-full p-5 border rounded-md relative">
-        {/* Title and "View All" button */}
-        <div className="flex justify-between items-center mb-4">
+        {/* Centered Title and Right-Aligned "View All" */}
+        <div className="flex justify-center items-center relative mb-4">
           <Title
             text="Shop by Categories"
             className="text-lg md:text-xl underline"
           />
           <Link
             to="/categories"
-            className="text-sm md:text-base font-semibold text-blue-600 hover:underline"
+            className="absolute right-0 text-sm md:text-base font-semibold text-blue-600 hover:underline"
           >
             View All
           </Link>
@@ -101,7 +101,6 @@ const Categories = () => {
                 </div>
                 {/* Title with word wrapping */}
                 <p className="mt-2 text-sm font-medium text-gray-700 break-words w-28">
-
                   {item.title}
                 </p>
               </Link>
