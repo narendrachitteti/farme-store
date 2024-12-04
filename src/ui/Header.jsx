@@ -774,8 +774,8 @@ const Navbar = () => {
           isMenuOpen ? "translate-x-0" : "-translate-x-full"
         } lg:static lg:translate-x-0 lg:flex lg:justify-center lg:space-x-6 py-4 text-gray-600 font-semibold text-sm lg:relative border-t border-gray-300`}
         style={{
-          marginLeft: "1rem", // Space on the left
-          marginRight: "1rem", // Space on the right
+          marginLeft: "0.2rem", // Space on the left
+          marginRight: "0.2rem", // Space on the right
         }}
       >
         {isMenuOpen && (
