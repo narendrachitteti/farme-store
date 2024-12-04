@@ -65,13 +65,16 @@ const BrandSection = () => {
                   <Link
                     key={brand._id}
                     to={`/products/brand/${brand._id}`}
-                    className="bg-white rounded-lg shadow-md border border-gray-200 p-4 flex items-center justify-center"
+                    className="bg-white rounded-lg shadow-md border border-gray-200 p-4 flex flex-col items-center justify-center"
                   >
                     <img
                       src={brand.imageUrl}
                       alt={brand.title}
-                      className="w-full h-24 object-contain"
+                      className="w-full h-24 object-contain mb-2"
                     />
+                    <p className="text-sm font-medium text-gray-700 text-center mt-2">
+                      {brand.title}
+                    </p>
                   </Link>
                 ))}
               </div>
@@ -92,13 +95,16 @@ const BrandSection = () => {
                     <Link
                       key={`${brand._id}-${index}`}
                       to={`/products/brand/${brand._id}`}
-                      className="flex-shrink-0 w-32 h-32 bg-white rounded-lg shadow-md border border-gray-200 p-4 flex items-center justify-center"
+                      className="flex-shrink-0 w-32 h-32 bg-white rounded-lg shadow-md border border-gray-200 p-4 flex flex-col items-center justify-center"
                     >
                       <img
                         src={brand.imageUrl}
                         alt={brand.title}
-                        className="w-full h-full object-contain"
+                        className="w-full h-full object-contain mb-2"
                       />
+                      <p className="text-sm font-medium text-gray-700 text-center mt-2">
+                        {brand.title}
+                      </p>
                     </Link>
                   ))}
                 </div>
@@ -155,9 +161,21 @@ const BrandSection = () => {
             transform: rotate(360deg);
           }
         }
+
+        /* Match crop card styles */
+        .w-32 {
+          width: 8rem; /* Fixed width */
+        }
+        .h-32 {
+          height: 8rem; /* Fixed height */
+        }
+        .object-contain {
+          object-fit: contain;
+        }
       `}</style>
     </section>
   );
 };
+
 
 export default BrandSection;

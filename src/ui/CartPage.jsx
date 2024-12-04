@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useCart } from "../contexts/CartContext";
 import { FiTrash2, FiEdit3, FiX, FiCheck } from "react-icons/fi";
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 // Snackbar Component
 const Snackbar = ({ message, isVisible, onClose, type = "success" }) => {
@@ -41,11 +41,14 @@ const Snackbar = ({ message, isVisible, onClose, type = "success" }) => {
 // Cart Page Component
 const CartPage = ({ isOpen, onClose }) => {
   const { cartItems, removeFromCart, updateItemQuantity } = useCart();
+  const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
     visible: false,
     message: "",
     type: "success",
   });
+  const [termsAccepted, setTermsAccepted] = useState(false); // Track checkbox state
+  const [error, setError] = useState(""); // Track error for missing terms acceptance
 
   const showSnackbar = (message, type = "success") => {
     setSnackbar({
@@ -88,6 +91,17 @@ const CartPage = ({ isOpen, onClose }) => {
       updateItemQuantity(itemId, newQuantity);
       showSnackbar("Quantity updated successfully");
     }
+  };
+
+  // Handle checkout button click
+  const handleCheckout = () => {
+    if (!termsAccepted) {
+      setError("You must accept the terms and conditions to proceed.");
+      return;
+    }
+    setError(""); // Clear error if terms are accepted
+    onClose(); // Close cart page
+    navigate("/checkout"); // Redirect to checkout
   };
 
   return (
@@ -234,6 +248,7 @@ const CartPage = ({ isOpen, onClose }) => {
                   type="checkbox"
                   id="terms"
                   className="mr-2"
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
                   aria-label="Accept terms and conditions"
                 />
                 <label htmlFor="terms" className="text-xs">
@@ -243,15 +258,17 @@ const CartPage = ({ isOpen, onClose }) => {
                   </a>
                 </label>
               </div>
+              {error && (
+                <p className="text-xs text-red-500 mb-2">{error}</p>
+              )}
 
-              <Link to="/checkout">
-                <button
-                  className="w-full p-3 bg-green-500 text-white rounded text-sm font-semibold hover:bg-green-600 transition-colors"
-                  aria-label="Proceed to checkout"
-                >
-                  Checkout
-                </button>
-              </Link>
+              <button
+                onClick={handleCheckout}
+                className="w-full p-3 bg-green-500 text-white rounded text-sm font-semibold hover:bg-green-600 transition-colors"
+                aria-label="Proceed to checkout"
+              >
+                Checkout
+              </button>
               <p className="text-xs text-gray-500 mt-2">
                 Shipping, taxes, and discount codes calculated at checkout.
               </p>
