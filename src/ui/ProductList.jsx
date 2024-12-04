@@ -58,11 +58,15 @@ const ProductSection = () => {
             <p className="text-gray-500 text-sm font-medium">Loading products...</p>
           </div>
         ) : (
-          // Display products once the data is fetched
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+          // Scrolling product cards
+          <div className="relative overflow-x-scroll flex space-x-4 snap-x snap-mandatory scrollbar-hide">
             {products.map((product) => (
-              <Link to={`/product/${product._id}`} key={product._id} className="block">
-                <div className="bg-white border border-gray-200 rounded-lg shadow-md p-2 sm:p-4 relative transform transition duration-300 hover:shadow-lg">
+              <Link
+                to={`/product/${product._id}`}
+                key={product._id}
+                className="flex-shrink-0 w-48 snap-start"
+              >
+                <div className="bg-white border border-gray-200 rounded-lg shadow-md p-4 sm:p-4 relative transform transition duration-300 hover:shadow-lg">
                   {/* Discount Badge */}
                   <div className="absolute top-2 left-2 bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
                     {Math.round(
@@ -120,6 +124,16 @@ const ProductSection = () => {
           </div>
         )}
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none; /* Hide the scrollbar in Webkit browsers */
+        }
+        .scrollbar-hide {
+          -ms-overflow-style: none; /* IE and Edge */
+          scrollbar-width: none; /* Firefox */
+        }
+      `}</style>
     </section>
   );
 };

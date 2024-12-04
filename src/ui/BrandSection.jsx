@@ -39,7 +39,7 @@ const BrandSection = () => {
   const duplicatedBrands = [...brands, ...brands];
 
   return (
-    <section className="py-8 bg-gray-100">
+    <section className="py-2 bg-gray-100">
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg sm:text-2xl font-semibold text-gray-800">

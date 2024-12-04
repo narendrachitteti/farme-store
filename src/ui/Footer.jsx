@@ -70,7 +70,7 @@ const Footer = () => {
             <p className="text-sm mb-1">6/237-G-8-K Devalam Street</p>
             <p className="text-sm mb-1">Extn.Ward No:6,</p>
             <p className="text-sm mb-1">Madanapalle-517325</p>
-            <p className="text-sm mb-1">Anammaya District,</p>
+            <p className="text-sm mb-1">Annamayya District,</p>
             <p className="text-sm mb-1">Andhra Pradesh.</p>
             <p className="text-sm">CIN : U74999AP2022PTC121551</p>
           </div>
