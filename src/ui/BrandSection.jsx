@@ -19,13 +19,16 @@ const BrandSection = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Fetch brands from API
+  // Fetch brands from API and sort them alphabetically
   useEffect(() => {
     const fetchBrands = async () => {
       try {
         setLoading(true); // Start loading
         const response = await axios.get(`${BASE_URL}/brand/get-brand`);
-        setBrands(response.data);
+        const sortedBrands = response.data.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        ); // Sort alphabetically
+        setBrands(sortedBrands);
       } catch (error) {
         console.error("Error fetching brands:", error);
       } finally {
@@ -176,6 +179,5 @@ const BrandSection = () => {
     </section>
   );
 };
-
 
 export default BrandSection;

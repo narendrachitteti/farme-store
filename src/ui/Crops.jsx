@@ -18,14 +18,17 @@ const CropsSection = () => {
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  // Fetch crops data from the API
+  // Fetch crops data from the API and sort alphabetically
   useEffect(() => {
     const fetchCrops = async () => {
       try {
         setLoading(true);
         const response = await fetch(`${BASE_URL}/crop/get-crops`);
         const data = await response.json();
-        setCrops(data);
+
+        // Sort crops alphabetically based on title
+        const sortedCrops = data.sort((a, b) => a.title.localeCompare(b.title));
+        setCrops(sortedCrops);
       } catch (error) {
         console.error("Error fetching crops:", error);
       } finally {
