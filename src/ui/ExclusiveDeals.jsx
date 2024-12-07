@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import BASE_URL from "../Helper/Helper";
 
 const ExclusiveDeals = () => {
   const [products, setProducts] = useState([]);
@@ -8,7 +9,7 @@ const ExclusiveDeals = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          "https://farm-e-store-backend.vercel.app/api/product/get-product"
+          `${BASE_URL}/product/get-product`
         );
         setProducts(response.data.slice(0, 3)); // Display only 3 cards
       } catch (error) {
