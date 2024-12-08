@@ -4,6 +4,7 @@ import axios from "axios";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
+import savedIcon from "../assets/discount.png"
 
 const ProductSection = () => {
   const [products, setProducts] = useState([]);
@@ -60,67 +61,94 @@ const ProductSection = () => {
         ) : (
           // Scrolling product cards
           <div className="relative overflow-x-scroll flex space-x-4 snap-x snap-mandatory scrollbar-hide">
-            {products.map((product) => (
-              <Link
-                to={`/product/${product._id}`}
-                key={product._id}
-                className="flex-shrink-0 w-48 snap-start"
-              >
-                <div className="bg-white border border-gray-200 rounded-lg shadow-md p-4 sm:p-4 relative transform transition duration-300 hover:shadow-lg">
-                  {/* Discount Badge */}
-                  <div className="absolute top-2 left-2 bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
-                    {Math.round(
-                      ((product.mrp_price - product.sell_price) / product.mrp_price) * 100
-                    )}
-                    % OFF
-                  </div>
+{products.map((product) => (
+  <Link
+    to={`/product/${product._id}`}
+    key={product._id}
+    className="flex-shrink-0 w-48 snap-start"
+  >
+    <div className="bg-white border border-gray-200 rounded-lg shadow-md p-4 sm:p-4 relative transform transition duration-300 hover:shadow-lg">
+      {/* Discount Badge */}
+      <div className="absolute top-2 left-2 bg-orange-600 text-white text-xs font-bold px-2 py-1 rounded-full shadow-md">
+        {Math.round(
+          ((product.mrp_price - product.sell_price) / product.mrp_price) * 100
+        )}
+        % OFF
+      </div>
 
-                  {/* Product Image */}
-                  <img
-                    src={product.imageUrl}
-                    alt={product.title}
-                    className="w-full h-28 sm:h-36 object-contain mb-2 rounded-lg"
-                  />
+      {/* Product Image */}
+      <img
+        src={product.imageUrl}
+        alt={product.title}
+        className="w-full h-28 sm:h-36 object-contain mb-2 rounded-lg"
+      />
 
-                  {/* Product Details */}
-                  <h3 className="text-sm font-semibold text-gray-800 truncate mb-1">
-                    {product.title}
-                  </h3>
-                  <p className="text-gray-500 text-xs mb-1">{product.sub_title}</p>
+      {/* Product Details */}
+      <h3 className="text-sm font-semibold text-gray-800 truncate mb-1">
+        {product.title}
+      </h3>
+      <p className="text-gray-500 text-xs mb-1">{product.sub_title}</p>
+{/* Package Quantities */}
+<strong className="text-xs text-gray-600 mb-2">
+        {/* <strong>Package Quantity:</strong>{" "} */}
+        {Array.isArray(product.package_qty)
+          ? product.package_qty
+              .map((pkg) => `${pkg.qty} (${pkg.pkgName})`)
+              .join(", ")
+          : "N/A"}
+      </strong>
+      {/* Price Details */}
+      <div className="flex items-center space-x-2 mb-1">
+        <div className="text-base font-bold text-green-600">
+          ₹{product.sell_price}
+        </div>
+        <div className="text-xs text-gray-500 line-through">
+          ₹{product.mrp_price}
+        </div>
+      </div>
+      <p className="text-xs text-green-500 mb-2 flex items-center">
+  <img
+    src={savedIcon}
+    alt="Saved"
+    className="w-4 h-4 mr-1"
+  />
+  Saved ₹{product.mrp_price - product.sell_price}
+</p>
 
-                  {/* Price Details */}
-                  <div className="flex items-center space-x-2 mb-1">
-                    <div className="text-base font-bold text-green-600">
-                      ₹{product.sell_price}
-                    </div>
-                    <div className="text-xs text-gray-500 line-through">
-                      ₹{product.mrp_price}
-                    </div>
-                  </div>
-                  <p className="text-xs text-green-500 mb-2">
-                    Saved ₹{product.mrp_price - product.sell_price}
-                  </p>
+<p className="text-xs text-gray-600 mb-1">
+  <strong>Mfg Date:</strong>{" "}
+  {product.mfg_date
+    ? new Date(product.mfg_date).toLocaleDateString("en-GB") // Format to day-month-year
+    : "N/A"}
+</p>
+      <p className="text-xs text-gray-600 mb-1">
+  <strong>Exp Date:</strong>{" "}
+  {product.expiry_date
+    ? new Date(product.expiry_date).toLocaleDateString("en-GB") // Format to day-month-year
+    : "N/A"}
+</p>
 
-                  {/* Add to Cart Button */}
-                  <button
-                    className={`flex items-center justify-center w-full py-2 text-white font-semibold rounded-lg text-xs sm:text-sm transition-colors duration-200 ${
-                      isItemInCart(product._id)
-                        ? "bg-green-500 hover:bg-green-600"
-                        : "bg-orange-400 hover:bg-orange-600"
-                    }`}
-                    onClick={(e) => {
-                      e.preventDefault(); // Prevent navigation when clicking the add to cart button
-                      handleAddToCart(product); // Add to cart functionality
-                    }}
-                  >
-                    <ShoppingCartIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
-                    {isItemInCart(product._id)
-                      ? `In Cart (${getItemQuantity(product._id)})`
-                      : "Add to Cart"}
-                  </button>
-                </div>
-              </Link>
-            ))}
+      {/* Add to Cart Button */}
+      <button
+        className={`flex items-center justify-center w-full py-2 text-white font-semibold rounded-lg text-xs sm:text-sm transition-colors duration-200 ${
+          isItemInCart(product._id)
+            ? "bg-green-500 hover:bg-green-600"
+            : "bg-orange-400 hover:bg-orange-600"
+        }`}
+        onClick={(e) => {
+          e.preventDefault(); // Prevent navigation when clicking the add to cart button
+          handleAddToCart(product); // Add to cart functionality
+        }}
+      >
+        <ShoppingCartIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
+        {isItemInCart(product._id)
+          ? `In Cart (${getItemQuantity(product._id)})`
+          : "Add to Cart"}
+      </button>
+    </div>
+  </Link>
+))}
+
           </div>
         )}
       </div>

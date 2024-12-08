@@ -240,7 +240,8 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                   >
                     Buy Now
                   </button>
-                </div>
+                </div><br/>
+                <h3>Please call us on 9010189891 for bulk quantity order</h3>
               </div>
             </div>
 

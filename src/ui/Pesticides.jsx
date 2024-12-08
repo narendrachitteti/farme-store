@@ -4,6 +4,7 @@ import axios from "axios";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
+import savedIcon from "../assets/discount.png"
 
 const Pesticides = () => {
   const [products, setProducts] = useState([]);
@@ -108,18 +109,46 @@ const Pesticides = () => {
                   </h3>
                   <p className="text-gray-500 text-xs mb-1">{product.sub_title}</p>
 
-                  {/* Price Details */}
-                  <div className="flex items-center space-x-2 mb-1">
-                    <div className="text-base font-bold text-green-600">
-                      ₹{product.sell_price}
-                    </div>
-                    <div className="text-xs text-gray-500 line-through">
-                      ₹{product.mrp_price}
-                    </div>
-                  </div>
-                  <p className="text-xs text-green-500 mb-2">
-                    Saved ₹{product.mrp_price - product.sell_price}
-                  </p>
+{/* Package Quantities */}
+<strong className="text-xs text-gray-600 mb-2">
+        {/* <strong>Package Quantity:</strong>{" "} */}
+        {Array.isArray(product.package_qty)
+          ? product.package_qty
+              .map((pkg) => `${pkg.qty} (${pkg.pkgName})`)
+              .join(", ")
+          : "N/A"}
+      </strong>
+      {/* Price Details */}
+      <div className="flex items-center space-x-2 mb-1">
+        <div className="text-base font-bold text-green-600">
+          ₹{product.sell_price}
+        </div>
+        <div className="text-xs text-gray-500 line-through">
+          ₹{product.mrp_price}
+        </div>
+      </div>
+      <p className="text-xs text-green-500 mb-2 flex items-center">
+  <img
+    src={savedIcon}
+    alt="Saved"
+    className="w-4 h-4 mr-1"
+  />
+  Saved ₹{product.mrp_price - product.sell_price}
+</p>
+
+
+<p className="text-xs text-gray-600 mb-1">
+  <strong>Mfg Date:</strong>{" "}
+  {product.mfg_date
+    ? new Date(product.mfg_date).toLocaleDateString("en-GB") // Format to day-month-year
+    : "N/A"}
+</p>
+   <p className="text-xs text-gray-600 mb-1">
+  <strong>Exp Date:</strong>{" "}
+  {product.expiry_date
+    ? new Date(product.expiry_date).toLocaleDateString("en-GB") // Format to day-month-year
+    : "N/A"}
+</p>
 
                   {/* Add to Cart Button */}
                   <button
