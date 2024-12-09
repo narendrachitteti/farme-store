@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import BASE_URL from "../Helper/Helper";
 
-const Allcrops = () => {
+const AllCrops = () => {
   const [crops, setCrops] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -13,13 +13,20 @@ const Allcrops = () => {
       try {
         setLoading(true);
         const response = await axios.get(`${BASE_URL}/crop/get-crops`);
-        setCrops(response.data);
+        
+        // Sort the crops alphabetically by title
+        const sortedCrops = response.data.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+
+        setCrops(sortedCrops);
       } catch (error) {
         console.error("Error fetching crops:", error);
       } finally {
         setLoading(false);
       }
     };
+
     fetchCrops();
   }, []);
 
@@ -53,4 +60,4 @@ const Allcrops = () => {
   );
 };
 
-export default Allcrops;
+export default AllCrops;

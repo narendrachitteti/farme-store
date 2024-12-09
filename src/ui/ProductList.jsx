@@ -117,15 +117,23 @@ const ProductSection = () => {
 
 <p className="text-xs text-gray-600 mb-1">
   <strong>Mfg Date:</strong>{" "}
-  {product.mfg_date
-    ? new Date(product.mfg_date).toLocaleDateString("en-GB") // Format to day-month-year
-    : "N/A"}
+  {product.mfg_date ? (
+    <span className="text-green-600">
+      {new Date(product.mfg_date).toLocaleDateString("en-GB")} {/* Format to day-month-year */}
+    </span>
+  ) : (
+    "N/A"
+  )}
 </p>
-      <p className="text-xs text-gray-600 mb-1">
+<p className="text-xs text-gray-600 mb-1">
   <strong>Exp Date:</strong>{" "}
-  {product.expiry_date
-    ? new Date(product.expiry_date).toLocaleDateString("en-GB") // Format to day-month-year
-    : "N/A"}
+  {product.expiry_date ? (
+    <span className="text-red-600">
+      {new Date(product.expiry_date).toLocaleDateString("en-GB")} {/* Format to day-month-year */}
+    </span>
+  ) : (
+    "N/A"
+  )}
 </p>
 
       {/* Add to Cart Button */}

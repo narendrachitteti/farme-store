@@ -8,7 +8,7 @@ import arrowIcon from "../assets/arrowicon.png";
 
 const CropDiagnosis = () => {
   return (
-    <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md border border-green-300 mx-4"> {/* Added mx-4 for extra spacing */}
+    <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md border border-green-300"> {/* Added mx-4 for extra spacing */}
       <h2 className="text-xl font-bold text-orange-500 mb-4">Crop Diagnosis</h2>
       <div className="w-full border-b-2 border-black-500 mb-4"></div>{" "}
       {/* Underline element */}

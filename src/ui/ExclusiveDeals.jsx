@@ -73,7 +73,9 @@ const ExclusiveDeals = () => {
                   <p className="text-gray-600 text-sm">
                     Expiry:{" "}
                     <span className="font-bold text-red-600">
-                      {product.expiry_date || "Jan-10-2027"}
+                    {product.expiry_date
+    ? new Date(product.expiry_date).toLocaleDateString("en-GB") // Format to day-month-year
+    : "N/A"}
                     </span>
                   </p>
 

@@ -11,11 +11,18 @@ const AllBrands = () => {
     const fetchBrands = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/brand/get-brand`);
-        setBrands(response.data);
+
+        // Sort the brands alphabetically by title
+        const sortedBrands = response.data.sort((a, b) =>
+          a.title.localeCompare(b.title)
+        );
+
+        setBrands(sortedBrands);
       } catch (error) {
         console.error("Error fetching brands:", error);
       }
     };
+
     fetchBrands();
   }, []);
 
