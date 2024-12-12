@@ -26,6 +26,7 @@ import Allcrops from "./ui/AllCrops";
 import { SearchProvider } from "./contexts/SearchContext";
 import ComingSoonPage from "./ui/comingsoon";
 import OrderDetails from "./ui/myorders";
+import ProductsListDetail from "./ui/ProductsListDetail";
 
 const RouterLayout = () => {
   return (
@@ -99,7 +100,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/products",
-        element: <ProductSection />,
+        element: <ProductsListDetail />,
       },
       // {
       //   path: "/favorite",

@@ -24,7 +24,7 @@ const HouseholdPublic = () => {
 
         // Find the "Household" category
         const householdCategory = categories.find(
-          (category) => category.title === "Household & Public Health"
+          (category) => category.title === "Household/Public Health"
         );
 
         if (householdCategory) {
@@ -74,7 +74,7 @@ const HouseholdPublic = () => {
             Household & Public Health
           </h2>
           <a
-            href="/products"
+            href="/products?category=Household/Public Health"
             className="text-blue-500 hover:underline text-sm font-medium"
           >
             View All
@@ -91,12 +91,12 @@ const HouseholdPublic = () => {
           </div>
         ) : (
           // Display products once the data is fetched
-          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 sm:gap-6">
+          <div className="relative overflow-x-scroll flex space-x-4 snap-x snap-mandatory scrollbar-hide">
             {products.map((product) => (
               <Link
                 to={`/product/${product._id}`}
                 key={product._id}
-                className="block"
+                className="flex-shrink-0 w-48 snap-start"
               >
                 <div className="bg-white border border-gray-200 rounded-lg shadow-md p-2 sm:p-4 relative transform transition duration-300 hover:shadow-lg">
                   {/* Discount Badge */}
