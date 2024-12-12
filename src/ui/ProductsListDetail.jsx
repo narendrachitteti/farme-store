@@ -14,7 +14,9 @@ const ProductsListDetail = () => {
 
   // Parse category from query parameters
   const searchParams = new URLSearchParams(location.search);
-  const categoryQuery = decodeURIComponent(searchParams.get("category"));
+  const categoryQuery = searchParams.get("category")
+  ? decodeURIComponent(searchParams.get("category"))
+  : null;
 
   // Fetch products from API
   useEffect(() => {
