@@ -158,11 +158,11 @@ const CartPage = ({ isOpen, onClose }) => {
                     <div className="ml-4 flex-grow">
                       <h3 className="text-sm font-semibold">{item.title}</h3>
                       <p className="text-xs text-gray-600">{item.sub_title}</p>
-                      <p className="text-xs text-gray-500 line-through">
-                        ₹{parseFloat(item.variant.originalPrice).toFixed(2)}
-                      </p>
                       <p className="text-sm font-bold text-green-600">
                         ₹{parseFloat(item.variant.price).toFixed(2)}
+                      </p>
+                      <p className="text-xs text-gray-500 line-through">
+                        ₹{parseFloat(item.variant.originalPrice).toFixed(2)}
                       </p>
                       <p className="text-xs text-green-600">
                         Save: ₹

@@ -1,18 +1,17 @@
-
 import React, { useEffect, useState, useRef } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getData } from "../lib/index";
 import {
-  FaWhatsapp,
-  FaShieldAlt,
-  FaFlag,
-  FaShippingFast,
+  // FaWhatsapp,
+  // FaShieldAlt,
+  // FaFlag,
+  // FaShippingFast,
   FaChevronRight,
-  FaHome
+  FaHome,
 } from "react-icons/fa";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
-import { FaTag } from 'react-icons/fa';
+import { FaTag } from "react-icons/fa";
 
 const ImageModal = ({ imageUrl, alt, onClose }) => (
   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
@@ -35,7 +34,10 @@ const Breadcrumb = ({ product }) => (
   <nav className="bg-white p-4 rounded-lg shadow-md mb-4">
     <ol className="flex flex-wrap items-center text-sm">
       <li className="flex items-center">
-        <Link to="/" className="text-gray-600 hover:text-orange-500 flex items-center">
+        <Link
+          to="/"
+          className="text-gray-600 hover:text-orange-500 flex items-center"
+        >
           <FaHome className="mr-1" />
           Home
         </Link>
@@ -52,7 +54,7 @@ const Breadcrumb = ({ product }) => (
         <FaChevronRight className="text-gray-400" size={12} />
       </li>
       <li className="text-orange-500 truncate">
-        {product?.title || 'Loading...'}
+        {product?.title || "Loading..."}
       </li>
     </ol>
   </nav>
@@ -64,7 +66,7 @@ const ProductDescriptionPoints = ({ description }) => (
       Product Description
     </h3>
     <ul className="list-disc pl-6 text-gray-600 space-y-2">
-      {description.split('\n').map((point, index) => (
+      {description.split("\n").map((point, index) => (
         <li key={index}>{point}</li>
       ))}
     </ul>
@@ -78,7 +80,7 @@ const ProductDetailsPage = ({ onCartOpen }) => {
   const [selectedVariant, setSelectedVariant] = useState(null);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [showModal, setShowModal] = useState(false);  // New state to control modal visibility
+  const [showModal, setShowModal] = useState(false); // New state to control modal visibility
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -116,15 +118,15 @@ const ProductDetailsPage = ({ onCartOpen }) => {
         id: `${product._id}-${selectedVariant.size}`,
         imageUrl: product.imageUrl,
         title: product.title,
-        brandName: product.sub_title || 'Default subtitle',
+        brandName: product.sub_title || "Default subtitle",
         variant: {
           size: selectedVariant.size,
           price: selectedVariant.price,
-          originalPrice: selectedVariant.originalPrice
+          originalPrice: selectedVariant.originalPrice,
         },
-        quantity: 1
+        quantity: 1,
       };
-      
+
       addToCart(cartItem);
       setSnackbarVisible(true);
       setTimeout(() => setSnackbarVisible(false), 3000);
@@ -135,7 +137,7 @@ const ProductDetailsPage = ({ onCartOpen }) => {
   };
 
   const handleVariantChange = (variant) => setSelectedVariant(variant);
-  
+
   const handleThumbnailClick = (imageUrl) => {
     setSelectedImage(imageUrl);
   };
@@ -145,14 +147,14 @@ const ProductDetailsPage = ({ onCartOpen }) => {
   };
 
   const closeModal = () => {
-    setShowModal(false);  // Close the modal
+    setShowModal(false); // Close the modal
   };
 
   return (
     <div className="p-5">
       <div className="max-w-4xl mx-auto">
         <Breadcrumb product={product} />
-        
+
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
@@ -166,7 +168,7 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                   alt={product.title}
                   className="object-contain rounded-lg cursor-pointer"
                   style={{ width: 400, height: 400 }}
-                  onClick={handleImageClick}  // Trigger modal on click
+                  onClick={handleImageClick} // Trigger modal on click
                 />
                 <div className="flex space-x-2 mt-4">
                   {[product.imageUrl, product.imageUrl, product.imageUrl].map(
@@ -176,7 +178,11 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                         src={thumb}
                         alt={`${product.title} thumbnail ${index + 1}`}
                         className={`w-16 h-16 object-contain cursor-pointer border rounded 
-                          ${selectedImage === thumb ? 'border-orange-500' : 'border-gray-300'}`}
+                          ${
+                            selectedImage === thumb
+                              ? "border-orange-500"
+                              : "border-gray-300"
+                          }`}
                         onClick={() => handleThumbnailClick(thumb)}
                       />
                     )
@@ -208,9 +214,11 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                       {selectedVariant?.discount}% OFF
                     </span>
                   </div>
-                  <p className="text-sm text-gray-500">Inclusive of all taxes</p>
+                  <p className="text-sm text-gray-500">
+                    Inclusive of all taxes
+                  </p>
                 </div>
-                <div className="mt-4 flex items-center space-x-2">
+                {/* <div className="mt-4 flex items-center space-x-2">
                   <FaFlag className="text-green-500" />
                   <span className="text-gray-600 text-sm">
                     Country of Origin: India
@@ -225,7 +233,7 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                   <span className="text-gray-600 text-sm">
                     In stock, Ready to Ship
                   </span>
-                </div> 
+                </div>  */}
 
                 <div className="mt-6 flex space-x-4">
                   <button
@@ -240,8 +248,18 @@ const ProductDetailsPage = ({ onCartOpen }) => {
                   >
                     Buy Now
                   </button>
-                </div><br/>
-                <h3>Please call us on 9010189891 for bulk quantity order</h3>
+                </div>
+                <br />
+                <h3>
+                  Please call us on{" "}
+                  <a
+                    href="tel:9010189891"
+                    className=" font-bold"
+                  >
+                    9010189891
+                  </a>{" "}
+                  for bulk quantity order
+                </h3>
               </div>
             </div>
 

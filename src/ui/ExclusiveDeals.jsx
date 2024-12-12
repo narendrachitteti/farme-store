@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import BASE_URL from "../Helper/Helper";
+import { useCart } from "../contexts/CartContext";
+import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 const ExclusiveDeals = () => {
   const [products, setProducts] = useState([]);
+  const { addToCart, isItemInCart, getItemQuantity } = useCart(); // Use CartContext
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(
-          `${BASE_URL}/product/get-product`
-        );
+        const response = await axios.get(`${BASE_URL}/product/get-product`);
         setProducts(response.data.slice(0, 3)); // Display only 3 cards
       } catch (error) {
         console.error("Error fetching products:", error);
@@ -21,6 +22,20 @@ const ExclusiveDeals = () => {
 
   // Labels for each card
   const shopLabels = ["Shop For ₹1,000", "Shop For ₹2,000", "Shop For ₹3,500"];
+
+  // Function to handle adding a product to the cart
+  const handleAddToCart = (product) => {
+    addToCart({
+      id: product._id,
+      title: product.title,
+      sub_title: product.sub_title,
+      imageUrl: product.imageUrl,
+      variant: {
+        originalPrice: product.mrp_price,
+        price: product.sell_price,
+      },
+    });
+  };
 
   return (
     <div className="bg-white py-8">
@@ -73,9 +88,11 @@ const ExclusiveDeals = () => {
                   <p className="text-gray-600 text-sm">
                     Expiry:{" "}
                     <span className="font-bold text-red-600">
-                    {product.expiry_date
-    ? new Date(product.expiry_date).toLocaleDateString("en-GB") // Format to day-month-year
-    : "N/A"}
+                      {product.expiry_date
+                        ? new Date(product.expiry_date).toLocaleDateString(
+                            "en-GB"
+                          ) // Format to day-month-year
+                        : "N/A"}
                     </span>
                   </p>
 
@@ -88,6 +105,27 @@ const ExclusiveDeals = () => {
                       ₹{product.mrp_price}
                     </p>
                   </div>
+
+                  {/* Add to Cart Button */}
+                  <button
+                    className={`mt-4 flex items-center justify-center w-full py-2 text-white font-semibold rounded-lg text-xs sm:text-sm transition-colors duration-200 ${
+                      isItemInCart(product._id)
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-orange-400 hover:bg-orange-600"
+                    }`}
+                    onClick={(e) => {
+                      e.preventDefault(); // Prevent navigation when clicking the add to cart button
+                      if (!isItemInCart(product._id)) {
+                        handleAddToCart(product); // Add to cart functionality
+                      }
+                    }}
+                    disabled={isItemInCart(product._id)} // Disable the button if the item is already in the cart
+                  >
+                    <ShoppingCartIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
+                    {isItemInCart(product._id)
+                      ? `In Cart (${getItemQuantity(product._id)})`
+                      : "Add to Cart"}
+                  </button>
                 </div>
               </div>
             </div>

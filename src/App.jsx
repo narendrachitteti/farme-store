@@ -16,6 +16,7 @@ import Gardening from "./ui/Gardening";
 import FarmImplements from "./ui/FarmImplements";
 import HouseholdPublic from "./ui/HouseholdPublic";
 import Irrigation from "./ui/Irrigation";
+import IntegratedPestManagement from "./ui/IntegratedPest";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Pesticides/>
       <Fertilizers/>
       <Seeds/>
+      <IntegratedPestManagement/>
       <Gardening/>
       <FarmImplements/>
       <HouseholdPublic/>

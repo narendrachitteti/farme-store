@@ -67,7 +67,7 @@ const Irrigation = () => {
   };
 
   return (
-    <section className="py-8 bg-gray-100">
+    <section className="py-4 bg-gray-100">
       <div className="container mx-auto px-2 sm:px-4">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-lg sm:text-2xl font-bold text-gray-800">
@@ -147,7 +147,7 @@ const Irrigation = () => {
                   </p>
 
                   <p className="text-xs text-gray-600 mb-1">
-                    <strong>Mfg Date:</strong>{" "}
+                    <strong>MFG Date :</strong>{" "}
                     {product.mfg_date ? (
                       <span className="text-green-600">
                         {new Date(product.mfg_date).toLocaleDateString("en-GB")}
@@ -157,7 +157,7 @@ const Irrigation = () => {
                     )}
                   </p>
                   <p className="text-xs text-gray-600 mb-1">
-                    <strong>Exp Date:</strong>{" "}
+                    <strong>EXP Date :</strong>{" "}
                     {product.expiry_date ? (
                       <span className="text-red-600">
                         {new Date(product.expiry_date).toLocaleDateString(
