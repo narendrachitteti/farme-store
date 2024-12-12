@@ -4,6 +4,7 @@ import axios from "axios";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
+import savedIcon from "../assets/discount.png";
 
 const IntegratedPestManagement = () => {
   const [products, setProducts] = useState([]);
@@ -65,7 +66,7 @@ const IntegratedPestManagement = () => {
     <section className="py-2 bg-gray-100">
       <div className="container mx-auto px-2 sm:px-4">
         <div className="flex justify-between items-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-800">Integrated Pest Management</h2>
+          <h2 className="text-lg sm:text-2xl font-bold text-gray-800">Integrated Pest Management</h2>
           <a
             href="/products"
             className="text-blue-500 hover:underline text-sm font-medium"
@@ -78,7 +79,7 @@ const IntegratedPestManagement = () => {
           // Spinner Loader
           <div className="flex justify-center items-center min-h-[200px] flex-col">
             <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin mb-2"></div>
-            <p className="text-gray-500 text-sm font-medium">Loading products...</p>
+            <p className="text-gray-500 text-sm font-medium">Loading Integrated pest products...</p>
           </div>
         ) : (
           // Product Grid with horizontal scrolling for mobile view
@@ -112,7 +113,15 @@ const IntegratedPestManagement = () => {
                     {product.title}
                   </h3>
                   <p className="text-gray-500 text-xs mb-1">{product.sub_title}</p>
-
+                  
+                  <strong className="text-xs text-gray-600 mb-2">
+                    {/* <strong>Package Quantity:</strong>{" "} */}
+                    {Array.isArray(product.package_qty)
+                      ? product.package_qty
+                          .map((pkg) => `${pkg.qty} (${pkg.pkgName})`)
+                          .join(", ")
+                      : "N/A"}
+                  </strong>
                   {/* Price Details */}
                   <div className="flex items-center space-x-2 mb-1">
                     <div className="text-base font-bold text-green-600">
@@ -122,7 +131,8 @@ const IntegratedPestManagement = () => {
                       ₹{product.mrp_price}
                     </div>
                   </div>
-                  <p className="text-xs text-green-500 mb-2">
+                  <p className="text-xs text-green-500 mb-2 flex items-center">
+                  <img src={savedIcon} alt="Saved" className="w-4 h-4 mr-1" />
                     Saved ₹{product.mrp_price - product.sell_price}
                   </p>
                   <p className="text-xs text-gray-600 mb-1">
