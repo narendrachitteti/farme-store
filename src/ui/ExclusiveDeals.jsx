@@ -12,7 +12,7 @@ const ExclusiveDeals = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/product/get-product`);
-        setProducts(response.data.slice(0, 3)); // Display only 3 cards
+        setProducts(response.data.slice(0, 4)); // Display only 3 cards
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -21,7 +21,7 @@ const ExclusiveDeals = () => {
   }, []);
 
   // Labels for each card
-  const shopLabels = ["Shop For ₹1,000", "Shop For ₹2,000", "Shop For ₹3,500"];
+  const shopLabels = ["Shop For ₹1,000", "Shop For ₹2,000", "Shop For ₹3,500", "Shop For ₹4,500",];
 
   // Function to handle adding a product to the cart
   const handleAddToCart = (product) => {

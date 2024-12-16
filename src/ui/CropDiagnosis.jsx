@@ -1,14 +1,14 @@
 import React from "react";
 
 // Import the images
-import selectPlant from "../assets/tomatoplant.avif";
-import findPest from "../assets/findpest.png";
+import selectPlant from "../assets/tomato.png";
+import findPest from "../assets/pests.png";
 import getExact from "../assets/pesticide.png";
-import arrowIcon from "../assets/arrowicon.png";
+import arrowIcon from "../assets/right-chevron1.png";
 
 const CropDiagnosis = () => {
   return (
-    <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-md border border-green-300"> {/* Added mx-4 for extra spacing */}
+    <div className="flex flex-col items-center p-6 bg-white rounded-lg shadow-md border border-green-300"> {/* Added mx-4 for extra spacing */}
       <h2 className="text-xl font-bold text-orange-500 mb-4">Crop Diagnosis</h2>
       <div className="w-full border-b-2 border-black-500 mb-4"></div>{" "}
       {/* Underline element */}
@@ -30,7 +30,7 @@ const CropDiagnosis = () => {
 
         {/* Arrow 1 */}
         <div className="mx-1 flex-shrink-0">
-          <img src={arrowIcon} alt="Arrow" className="w-6 h-6 sm:w-6 sm:h-6" />
+          <img src={arrowIcon} alt="Arrow" className="w-20 h-20 sm:w-24 sm:h-24" />
         </div>
 
         {/* Step 2 */}
@@ -50,7 +50,7 @@ const CropDiagnosis = () => {
 
         {/* Arrow 2 */}
         <div className="mx-1 flex-shrink-0">
-          <img src={arrowIcon} alt="Arrow" className="w-6 h-6 sm:w-6 sm:h-6" />
+          <img src={arrowIcon} alt="Arrow" className="w-20 h-20 sm:w-24 sm:h-24" />
         </div>
 
         {/* Step 3 */}
