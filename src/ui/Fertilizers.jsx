@@ -5,6 +5,9 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
 import savedIcon from "../assets/discount.png";
+import wishlistIcon from "../assets/wishlist.png";
+import shareIcon from "../assets/share.png";
+
 const Fertilizers = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true); // State to manage loading
@@ -107,7 +110,18 @@ const Fertilizers = () => {
                     )}
                     % OFF
                   </div>
-
+                  <div className="absolute top-2 right-2 flex flex-col items-center space-y-2">
+                  <img
+                    src={wishlistIcon}
+                    alt="Wishlist"
+                    className="w-6 h-6 cursor-pointer"
+                  />
+                  <img
+                    src={shareIcon}
+                    alt="Share"
+                    className="w-6 h-6 cursor-pointer"
+                  />
+                </div>
                   {/* Product Image */}
                   <img
                     src={product.imageUrl}

@@ -4,6 +4,8 @@ import axios from "axios";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { useCart } from "../contexts/CartContext";
 import BASE_URL from "../Helper/Helper";
+import wishlistIcon from "../assets/wishlist.png";
+import shareIcon from "../assets/share.png";
 import savedIcon from "../assets/discount.png";
 
 const Irrigation = () => {
@@ -109,6 +111,18 @@ const Irrigation = () => {
                     % OFF
                   </div>
 
+                  <div className="absolute top-2 right-2 flex flex-col items-center space-y-2">
+                  <img
+                    src={wishlistIcon}
+                    alt="Wishlist"
+                    className="w-6 h-6 cursor-pointer"
+                  />
+                  <img
+                    src={shareIcon}
+                    alt="Share"
+                    className="w-6 h-6 cursor-pointer"
+                  />
+                </div>
                   {/* Product Image */}
                   <img
                     src={product.imageUrl}
