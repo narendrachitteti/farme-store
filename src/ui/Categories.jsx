@@ -92,7 +92,7 @@ const Categories = () => {
                 key={item._id}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-28 h-28 bg-gray-200 rounded-full overflow-hidden">
+                <div className="w-28 h-28 bg-gray-200 overflow-hidden">
                   <img
                     src={item.imageUrl}
                     alt={item.title}

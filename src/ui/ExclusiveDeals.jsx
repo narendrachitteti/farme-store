@@ -12,7 +12,7 @@ const ExclusiveDeals = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(`${BASE_URL}/product/get-product`);
-        setProducts(response.data.slice(0, 4)); // Display only 3 cards
+        setProducts(response.data.slice(0, 10)); // Display up to 10 cards
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -20,10 +20,19 @@ const ExclusiveDeals = () => {
     fetchProducts();
   }, []);
 
-  // Labels for each card
-  const shopLabels = ["Shop For ₹1,000", "Shop For ₹2,000", "Shop For ₹3,500", "Shop For ₹4,500",];
+  const shopLabels = [
+    "Shop For ₹1,000",
+    "Shop For ₹2,000",
+    "Shop For ₹3,500",
+    "Shop For ₹4,500",
+    "Shop For ₹5,000",
+    "Shop For ₹6,000",
+    "Shop For ₹7,000",
+    "Shop For ₹8,000",
+    "Shop For ₹9,000",
+    "Shop For ₹10,000",
+  ];
 
-  // Function to handle adding a product to the cart
   const handleAddToCart = (product) => {
     addToCart({
       id: product._id,
@@ -45,20 +54,20 @@ const ExclusiveDeals = () => {
           Claim Exclusive Deals
         </h2>
 
-        {/* Cards Section */}
-        <div className="overflow-x-auto whitespace-nowrap md:grid md:grid-cols-3 gap-6">
+        {/* Cards Section: Horizontal Scroller */}
+        <div className="flex overflow-x-auto space-x-4 px-2 md:px-0 scrollbar-hide">
           {products.map((product, index) => (
             <div
               key={product._id}
-              className="inline-block md:flex md:flex-col border border-green-500 rounded-lg shadow-lg bg-white mx-2 md:mx-0"
-              style={{ minWidth: "300px" }} // Ensures card width in scroller
+              className="flex flex-col border border-green-500 rounded-lg shadow-lg bg-white flex-shrink-0"
+              style={{ minWidth: "300px" }} // Fixed card width
             >
               {/* Top: Shop Label */}
               <div className="text-center p-2 border-b border-green-500">
                 <p className="font-bold text-gray-800">
                   Shop For{" "}
                   <span className="text-red-600">
-                    {shopLabels[index].split("Shop For ")[1]}
+                    {shopLabels[index % shopLabels.length].split("Shop For ")[1]}
                   </span>
                 </p>
               </div>
@@ -91,7 +100,7 @@ const ExclusiveDeals = () => {
                       {product.expiry_date
                         ? new Date(product.expiry_date).toLocaleDateString(
                             "en-GB"
-                          ) // Format to day-month-year
+                          )
                         : "N/A"}
                     </span>
                   </p>
@@ -114,12 +123,12 @@ const ExclusiveDeals = () => {
                         : "bg-orange-400 hover:bg-orange-600"
                     }`}
                     onClick={(e) => {
-                      e.preventDefault(); // Prevent navigation when clicking the add to cart button
+                      e.preventDefault();
                       if (!isItemInCart(product._id)) {
-                        handleAddToCart(product); // Add to cart functionality
+                        handleAddToCart(product);
                       }
                     }}
-                    disabled={isItemInCart(product._id)} // Disable the button if the item is already in the cart
+                    disabled={isItemInCart(product._id)}
                   >
                     <ShoppingCartIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
                     {isItemInCart(product._id)

@@ -41,7 +41,7 @@ const AllCategories = () => {
               key={item._id}
               className="flex flex-col items-center text-center border rounded-lg p-4 hover:shadow-lg transition-shadow"
             >
-              <div className="w-24 h-24 bg-gray-200 rounded-full overflow-hidden mb-2">
+              <div className="w-24 h-24 bg-gray-200 overflow-hidden mb-2">
                 <img
                   src={item.imageUrl}
                   alt={item.title}
