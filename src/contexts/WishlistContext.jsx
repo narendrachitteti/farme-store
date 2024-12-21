@@ -49,6 +49,8 @@ export const WishlistProvider = ({ children }) => {
     });
   };
 
+  const wishlistCount = wishlist.length;
+
   return (
     <WishlistContext.Provider
       value={{
@@ -56,6 +58,7 @@ export const WishlistProvider = ({ children }) => {
         addToWishlist,
         isItemInWishlist,
         removeFromWishlist,
+        wishlistCount,
       }}
     >
       {children}

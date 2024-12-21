@@ -455,7 +455,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Menu, MenuItem, IconButton, Avatar } from "@mui/material";
 import BASE_URL from "../Helper/Helper";
 import { useSearch } from "../contexts/SearchContext";
-import cartgif from "../assets/grocery.gif"
+import cartgif from "../assets/grocery.gif";
+import { useWishlist } from "../contexts/WishlistContext";
 
 const Navbar = () => {
   const [categories, setCategories] = useState([]);
@@ -464,6 +465,7 @@ const Navbar = () => {
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState("en");
   const { cartCount } = useCart();
+  const { wishlistCount } = useWishlist();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -471,6 +473,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { searchTerm, searchResults, handleSearch } = useSearch(); // Use the search context
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -605,12 +608,16 @@ const Navbar = () => {
               <option value="te">తె</option>
             </select>
             <Link
-            to="/wishlist"
-            className="text-gray-600 hover:text-gray-800 flex items-center"
-          >
-            <FiHeart className="w-5 h-5" />
-            {/* <span className="ml-1">Wishlist</span> */}
-          </Link>
+              to="/wishlist"
+              className="relative text-gray-600 hover:text-gray-800 cart-icon"
+            >
+              <FiHeart className="w-5 h-5" />
+              {wishlistCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                  {wishlistCount}
+                </span>
+              )}
+            </Link>
             <div>
               <IconButton onClick={handleMenuClick}>
                 <Avatar>
@@ -725,10 +732,14 @@ const Navbar = () => {
           </div>
           <Link
             to="/wishlist"
-            className="text-gray-600 hover:text-gray-800 flex items-center"
+            className="relative text-gray-600 hover:text-gray-800 cart-icon"
           >
             <FiHeart className="w-5 h-5" />
-            <span className="ml-1">Wishlist</span>
+            {wishlistCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
           </Link>
           <div>
             <IconButton onClick={handleMenuClick}>
@@ -783,96 +794,98 @@ const Navbar = () => {
 
       {/* Category Menu */}
       <div
-  className={`fixed inset-y-0 left-0 bg-white p-6 border border-green-300 rounded-md shadow-lg transition-transform transform ${
-    isMenuOpen ? "translate-x-0" : "-translate-x-full"
-  } lg:static lg:translate-x-0 lg:flex lg:justify-center lg:space-x-6 py-4 text-gray-600 font-semibold text-sm lg:relative border-t border-gray-300`}
-  style={{
-    marginLeft: "0.2rem", // Space on the left
-    marginRight: "0.2rem", // Space on the right
-  }}
->
-  {/* Close Button for Mobile View */}
-  {isMenuOpen && (
-    <button
-      className="text-black lg:hidden mb-4"
-      onClick={() => setMenuOpen(false)}
-    >
-      <FiX className="w-6 h-6" />
-    </button>
-  )}
-
-  {/* Service Cards for Mobile View */}
-  <div className="lg:hidden mb-4 w-full">{renderServiceCards()}</div>
-
-  {/* Render Categories */}
-  {categories.map((category) => {
-    const hasSubcategories = subCategories.some(
-      (sub) => sub.category_id === category._id
-    );
-
-    return (
-      <div key={category._id} className="relative group">
-        {/* Category Title and Chevron Icon */}
-        <div className="flex items-center justify-between">
-          <Link
-            to="#"
-            className="hover:text-gray-800 py-2 transition duration-200"
+        className={`fixed inset-y-0 left-0 bg-white p-6 border border-green-300 rounded-md shadow-lg transition-transform transform ${
+          isMenuOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:static lg:translate-x-0 lg:flex lg:justify-center lg:space-x-6 py-4 text-gray-600 font-semibold text-sm lg:relative border-t border-gray-300`}
+        style={{
+          marginLeft: "0.2rem", // Space on the left
+          marginRight: "0.2rem", // Space on the right
+        }}
+      >
+        {/* Close Button for Mobile View */}
+        {isMenuOpen && (
+          <button
+            className="text-black lg:hidden mb-4"
+            onClick={() => setMenuOpen(false)}
           >
-            {category.title}
-          </Link>
-
-          {/* Dropdown Toggle Button for Mobile */}
-          {hasSubcategories && (
-            <button
-              onClick={() =>
-                window.innerWidth < 1024
-                  ? setActiveCategory(
-                      activeCategory === category._id ? null : category._id
-                    )
-                  : null
-              }
-              className="lg:hidden"
-            >
-              {activeCategory === category._id ? (
-                <FiChevronUp className="w-5 h-5 text-gray-600" />
-              ) : (
-                <FiChevronDown className="w-5 h-5 text-gray-600" />
-              )}
-            </button>
-          )}
-        </div>
-
-        {/* Subcategories (Dropdown) */}
-        {hasSubcategories && (
-          <div
-            className={`lg:absolute lg:top-full lg:left-0 lg:bg-white lg:shadow-lg lg:rounded-md lg:p-2 lg:invisible lg:group-hover:visible ${
-              activeCategory === category._id || window.innerWidth >= 1024
-                ? "block"
-                : "hidden"
-            }`}
-          >
-            <ul>
-              {subCategories
-                .filter((sub) => sub.category_id === category._id)
-                .map((sub) => (
-                  <li
-                    key={sub._id}
-                    className="py-1 px-2 hover:bg-gray-100 transition duration-200"
-                  >
-                    <Link
-                      to={`/category/${category._id}/subcategory/${sub._id}/products`}
-                    >
-                      {sub.title}
-                    </Link>
-                  </li>
-                ))}
-            </ul>
-          </div>
+            <FiX className="w-6 h-6" />
+          </button>
         )}
+
+        {/* Service Cards for Mobile View */}
+        <div className="lg:hidden mb-4 w-full">{renderServiceCards()}</div>
+
+        {/* Render Categories */}
+        {categories.map((category) => {
+          const hasSubcategories = subCategories.some(
+            (sub) => sub.category_id === category._id
+          );
+
+          return (
+            <div key={category._id} className="relative group">
+              {/* Category Title and Chevron Icon */}
+              <div className="flex items-center justify-between">
+                <Link
+                  to="#"
+                  className="hover:text-gray-800 py-2 transition duration-200"
+                >
+                  {category.title}
+                </Link>
+
+                {/* Dropdown Toggle Button for Mobile */}
+                {hasSubcategories && (
+                  <button
+                    onClick={() =>
+                      window.innerWidth < 1024
+                        ? setActiveCategory(
+                            activeCategory === category._id
+                              ? null
+                              : category._id
+                          )
+                        : null
+                    }
+                    className="lg:hidden"
+                  >
+                    {activeCategory === category._id ? (
+                      <FiChevronUp className="w-5 h-5 text-gray-600" />
+                    ) : (
+                      <FiChevronDown className="w-5 h-5 text-gray-600" />
+                    )}
+                  </button>
+                )}
+              </div>
+
+              {/* Subcategories (Dropdown) */}
+              {hasSubcategories && (
+                <div
+                  className={`lg:absolute lg:top-full lg:left-0 lg:bg-white lg:shadow-lg lg:rounded-md lg:p-2 lg:invisible lg:group-hover:visible ${
+                    activeCategory === category._id || window.innerWidth >= 1024
+                      ? "block"
+                      : "hidden"
+                  }`}
+                >
+                  <ul>
+                    {subCategories
+                      .filter((sub) => sub.category_id === category._id)
+                      .map((sub) => (
+                        <li
+                          key={sub._id}
+                          className="py-1 px-2 hover:bg-gray-100 transition duration-200"
+                        >
+                          <Link
+                            to={`/category/${category._id}/subcategory/${sub._id}/products`}
+                          >
+                            {sub.title}
+                          </Link>
+                        </li>
+                      ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
-    );
-  })}
-</div>
 
       <CartPage isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </nav>

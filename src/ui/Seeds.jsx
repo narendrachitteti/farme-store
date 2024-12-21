@@ -10,6 +10,8 @@ import wishlistIcon from "../assets/wishlist.png";
 import filledHeartIcon from "../assets/wishlist1.png";
 import shareIcon from "../assets/share.png";
 import discountBadge from "../assets/discountBadge.png";
+import plusIcon from "../assets/plusIcon.png"
+import minusIcon from "../assets/minusIcon.png"
 
 const Seeds = () => {
   const [products, setProducts] = useState([]);
@@ -104,8 +106,16 @@ const Seeds = () => {
     };
 
     const handleRemoveFromCart = (product, pkg) => {
-      const currentQuantity = getItemQuantity(product._id, pkg.pkgName);
-      if (currentQuantity > 1) {
+      const currentQuantity = getItemQuantity(product._id);
+      
+      // Always reduce quantity by 1
+      const newQuantity = currentQuantity - 1;
+      
+      if (newQuantity === 0) {
+        // If new quantity would be 0, remove item completely
+        removeFromCart(product._id);
+      } else {
+        // Otherwise update with reduced quantity
         const updatedItem = {
           id: product._id,
           title: product.title,
@@ -114,16 +124,16 @@ const Seeds = () => {
           variant: {
             originalPrice: product.mrp_price,
             price: product.sell_price,
-            quantity: currentQuantity - 1,
+            quantity: newQuantity,
             packageName: pkg.pkgName,
           },
         };
+        
+        // Force update cart with new quantity
+        removeFromCart(product._id);
         addToCart(updatedItem);
-      } else {
-        removeFromCart(product._id, pkg.pkgName);
       }
     };
-
     return (
       <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
         <div className="bg-white rounded-lg shadow-lg p-6 w-[90%] max-w-md relative">
@@ -205,23 +215,29 @@ const Seeds = () => {
                   </div>
                   <div className="ml-4">
                     {isItemInCart(product._id) ? (
-                      <div className="flex items-center space-x-2">
-                        <button
-                          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded"
-                          onClick={() => handleRemoveFromCart(product, pkg)}
-                        >
-                          -
-                        </button>
-                        <span className="w-8 text-center">
-                          {getItemQuantity(product._id)}
-                        </span>
-                        <button
-                          className="bg-gray-200 hover:bg-gray-300 text-gray-800 px-3 py-1 rounded"
-                          onClick={() => handleAddToCart(product, pkg)}
-                        >
-                          +
-                        </button>
-                      </div>
+                      <div className="flex items-center space-x-2 border-2 border-gray-300 px-3 py-1 rounded">
+                      <button
+                        onClick={() => handleRemoveFromCart(product, pkg)}
+                      >
+                        <img
+                          src={minusIcon}
+                          alt="Remove"
+                          className="w-4 h-4"
+                        />
+                      </button>
+                      <span className="w-8 text-center">
+                        {getItemQuantity(product._id, pkg.pkgName)}
+                      </span>
+                      <button
+                        onClick={() => handleAddToCart(product, pkg)}
+                      >
+                        <img
+                          src={plusIcon}
+                          alt="Add"
+                          className="w-4 h-4"
+                        />
+                      </button>
+                    </div>
                     ) : (
                       <button
                         className="bg-gray-600 hover:bg-orange-600 text-white px-4 py-1 rounded text-sm"
@@ -393,10 +409,28 @@ const Seeds = () => {
                         }}
                       >
                         {Array.isArray(product.package_qty) &&
-                          product.package_qty.map((pkg, index) => (
-                            <option key={index} value={pkg.qty}>
-                              {pkg.qty} {pkg.pkgName}
-                            </option>
+                           product.package_qty.map((pkg, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between items-center w-full text-gray-800"
+                            >
+                              <span>
+                                {pkg.qty} {pkg.pkgName}
+                              </span>
+                              {/* Chevron-down icon */}
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="h-4 w-4 text-gray-600"
+                                viewBox="0 0 20 20"
+                                fill="currentColor"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M5.23 7.21a.75.75 0 011.06.02L10 11.3l3.71-4.07a.75.75 0 111.08 1.04l-4 4.39a.75.75 0 01-1.08 0l-4-4.39a.75.75 0 01.02-1.06z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </div>
                           ))}
                       </textfield>
                     </div>
