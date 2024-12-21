@@ -600,11 +600,17 @@ const Navbar = () => {
               onChange={(e) => handleLanguageChange(e.target.value)}
               className="border border-gray-300 rounded px-2 py-1 text-gray-600"
             >
-              <option value="en">English</option>
-              <option value="hi">हिन्दी</option>
-              <option value="te">తెలుగు</option>
+              <option value="en">En</option>
+              <option value="hi">हि</option>
+              <option value="te">తె</option>
             </select>
-
+            <Link
+            to="/wishlist"
+            className="text-gray-600 hover:text-gray-800 flex items-center"
+          >
+            <FiHeart className="w-5 h-5" />
+            {/* <span className="ml-1">Wishlist</span> */}
+          </Link>
             <div>
               <IconButton onClick={handleMenuClick}>
                 <Avatar>
@@ -717,7 +723,13 @@ const Navbar = () => {
               <option value="te">తెలుగు</option>
             </select>
           </div>
-
+          <Link
+            to="/wishlist"
+            className="text-gray-600 hover:text-gray-800 flex items-center"
+          >
+            <FiHeart className="w-5 h-5" />
+            <span className="ml-1">Wishlist</span>
+          </Link>
           <div>
             <IconButton onClick={handleMenuClick}>
               <Avatar>
