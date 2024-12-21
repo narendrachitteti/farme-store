@@ -9,16 +9,26 @@ const WishlistPage = () => {
 
   // Handle add to cart functionality
   const handleAddToCart = (product) => {
+    if (!product.id) { // Ensure `id` is present (update field name if needed)
+      console.error("Product ID is missing:", product);
+      return; // Prevent adding invalid items to the cart
+    }
+
     addToCart({
-      id: product._id, // Make sure to use _id for consistency
-      title: product.title,
-      sub_title: product.sub_title,
+      id: product.id, // Use `id` instead of `_id` if that's how it's stored
+      title: product.title || "Untitled", // Fallback to prevent errors
+      sub_title: product.sub_title || "",
       imageUrl: product.imageUrl,
       variant: {
-        originalPrice: product.mrp_price,
-        price: product.sell_price,
+        originalPrice: product.mrp_price || 0, // Default to 0 if missing
+        price: product.sell_price || 0, // Default to 0 if missing
       },
     });
+  };
+
+  // Handle remove from wishlist functionality
+  const handleRemoveFromWishlist = (productId) => {
+    removeFromWishlist(productId);
   };
 
   return (
@@ -32,7 +42,7 @@ const WishlistPage = () => {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {wishlist.map((product) => (
               <div
-                key={product._id} // Use _id here for consistency
+                key={product.id} // Use `id` for consistency
                 className="bg-white border rounded-lg p-4 shadow-sm"
               >
                 <img
@@ -47,7 +57,7 @@ const WishlistPage = () => {
                   {/* Add to Cart button */}
                   <button
                     className={`flex items-center justify-center w-1/2 py-2 text-white font-semibold rounded-lg text-xs sm:text-sm transition-colors duration-200 ${
-                      isItemInCart(product._id)
+                      isItemInCart(product.id)
                         ? "bg-green-500 hover:bg-green-600"
                         : "bg-orange-400 hover:bg-orange-600"
                     }`}
@@ -57,14 +67,14 @@ const WishlistPage = () => {
                     }}
                   >
                     <ShoppingCartIcon className="w-4 h-4 sm:w-5 sm:h-5 mr-1" />
-                    {isItemInCart(product._id)
-                      ? `In Cart (${getItemQuantity(product._id)})`
+                    {isItemInCart(product.id)
+                      ? `In Cart (${getItemQuantity(product.id)})`
                       : "Add to Cart"}
                   </button>
 
                   {/* Remove from wishlist button */}
                   <button
-                    onClick={() => removeFromWishlist(product._id)} // Use _id here
+                    onClick={() => handleRemoveFromWishlist(product.id)} // Use `id`
                     className="text-red-500 text-xs sm:text-sm ml-2 border border-red-500 py-1 px-2 rounded-lg hover:bg-red-500 hover:text-white transition duration-200"
                   >
                     Remove

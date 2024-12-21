@@ -138,31 +138,57 @@ export const CartProvider = ({ children }) => {
   }, [cartItems]);
 
   // Add item to cart
+  // const addToCart = (newItem) => {
+  //   if (!newItem.id) {
+  //     console.error("Invalid item format:", newItem);
+  //     return;
+  //   }
+
+  //   setCartItems((prevItems) => {
+  //     const existingItemIndex = prevItems.findIndex(item => item.id === newItem.id);
+
+  //     if (existingItemIndex !== -1) {
+  //       return prevItems.map((item, index) => {
+  //         if (index === existingItemIndex) {
+  //           return {
+  //             ...item,
+  //             quantity: item.quantity + 1
+  //           };
+  //         }
+  //         return item;
+  //       });
+  //     }
+
+  //     return [...prevItems, { ...newItem, quantity: 1 }];
+  //   });
+  // };
   const addToCart = (newItem) => {
     if (!newItem.id) {
       console.error("Invalid item format:", newItem);
       return;
     }
-
+  
     setCartItems((prevItems) => {
-      const existingItemIndex = prevItems.findIndex(item => item.id === newItem.id);
-
+      const existingItemIndex = prevItems.findIndex(
+        (item) => item.id === newItem.id
+      );
+  
       if (existingItemIndex !== -1) {
         return prevItems.map((item, index) => {
           if (index === existingItemIndex) {
             return {
               ...item,
-              quantity: item.quantity + 1
+              quantity: item.quantity + 1,
             };
           }
           return item;
         });
       }
-
+  
       return [...prevItems, { ...newItem, quantity: 1 }];
     });
   };
-
+  
   // Remove item from cart
   const removeFromCart = (itemId) => {
     setCartItems(prevItems => prevItems.filter(item => item.id !== itemId));

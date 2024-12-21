@@ -20,6 +20,11 @@ export const WishlistProvider = ({ children }) => {
   }, [wishlist]);
 
   const addToWishlist = (product) => {
+    if (!product.id) {
+      console.error("Invalid product format:", product);
+      return; // Prevent invalid items from being added
+    }
+
     setWishlist((prevWishlist) => {
       const isProductInWishlist = prevWishlist.some(
         (item) => item.id === product.id
